@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+{% block title %}Search: {{ query }}{% endblock %}
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+<p>{{ pets|length }} pet(s) found.</p>
+
+{% if pets is empty %}
+    <p>No pets matched your search. <a href="/pets">Browse all pets</a>.</p>
+{% else %}
+    <div class="pet-grid">
+        {% for pet in pets %}
+            <article class="pet-card">
+                <a href="/pets/{{ pet.id }}">
+                    <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}">
+                    <div class="pet-card__body">
+                        <h2>{{ pet.name }}</h2>
+                        <p>{{ pet.breed }} · {{ pet.age }} yrs</p>
+                        <span class="badge badge--{{ pet.status }}">{{ pet.status }}</span>
+                    </div>
+                </a>
+            </article>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

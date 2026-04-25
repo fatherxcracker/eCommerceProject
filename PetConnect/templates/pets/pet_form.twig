@@ -1,0 +1,97 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ pet ? 'Edit ' ~ pet.name : 'Add New Pet' }}{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <h1>{{ pet ? 'Edit ' ~ pet.name : 'Add New Pet' }}</h1>
+
+    <form action="{{ pet ? '/admin/pets/' ~ pet.id : '/admin/pets' }}"
+          method="POST"
+          enctype="multipart/form-data"
+          class="form-card">
+
+        {% if pet %}
+            <input type="hidden" name="_method" value="PUT">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="name">Pet Name *</label>
+            <input type="text" id="name" name="name" value="{{ pet.name ?? '' }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="species">Species *</label>
+                <input type="text" id="species" name="species" value="{{ pet.species ?? '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="breed">Breed</label>
+                <input type="text" id="breed" name="breed" value="{{ pet.breed ?? '' }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="age">Age (years) *</label>
+                <input type="number" id="age" name="age" value="{{ pet.age ?? '' }}" min="0" max="30" required>
+            </div>
+            <div class="form-group">
+                <label for="size">Size</label>
+                <select id="size" name="size">
+                    {% for size in ['Small', 'Medium', 'Large'] %}
+                        <option value="{{ size }}" {{ pet.size == size ? 'selected' : '' }}>{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location *</label>
+            <input type="text" id="location" name="location" value="{{ pet.location ?? '' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category_id">Category *</label>
+            <select id="category_id" name="category_id" required>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ pet.category_id == cat.id ? 'selected' : '' }}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5">{{ pet.description ?? '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Photo</label>
+            {% if pet and pet.image %}
+                <img src="{{ pet.image }}" alt="Current photo" class="current-image-preview">
+            {% endif %}
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+
+        {% if pet %}
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="available" {{ pet.status == 'available' ? 'selected' : '' }}>Available</option>
+                    <option value="pending"   {{ pet.status == 'pending'   ? 'selected' : '' }}>Pending</option>
+                    <option value="adopted"   {{ pet.status == 'adopted'   ? 'selected' : '' }}>Adopted</option>
+                </select>
+            </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {{ pet ? 'Save Changes' : 'Add Pet' }}
+            </button>
+            <a href="/admin/pets" class="btn btn--secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

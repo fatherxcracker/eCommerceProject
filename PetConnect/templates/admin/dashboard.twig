@@ -1,0 +1,78 @@
+{% extends 'base.twig' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+
+    {# Sidebar #}
+    <aside class="admin-sidebar">
+        <h2>Admin Panel</h2>
+        <nav>
+            <a href="/admin">📊 Dashboard</a>
+            <a href="/admin/pets">🐾 Manage Pets</a>
+            <a href="/admin/users">👥 Users</a>
+            <a href="/admin/adoptions">📋 Adoptions</a>
+            <a href="/">← Back to Site</a>
+        </nav>
+    </aside>
+
+    {# Main area #}
+    <div class="admin-main">
+        <h1>Dashboard Overview</h1>
+
+        {# Stats Cards #}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-card__number">{{ stats.total_pets }}</span>
+                <span class="stat-card__label">Total Pets</span>
+            </div>
+            <div class="stat-card stat-card--green">
+                <span class="stat-card__number">{{ stats.available_pets }}</span>
+                <span class="stat-card__label">Available</span>
+            </div>
+            <div class="stat-card stat-card--blue">
+                <span class="stat-card__number">{{ stats.adopted_pets }}</span>
+                <span class="stat-card__label">Adopted</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card__number">{{ stats.total_users }}</span>
+                <span class="stat-card__label">Users</span>
+            </div>
+            <div class="stat-card stat-card--orange">
+                <span class="stat-card__number">{{ stats.pending_requests }}</span>
+                <span class="stat-card__label">Pending Requests</span>
+            </div>
+        </div>
+
+        {# Pending Requests #}
+        <section>
+            <h2>Pending Adoption Requests</h2>
+            {% if recent_requests is empty %}
+                <p>No pending requests.</p>
+            {% else %}
+                <table class="data-table">
+                    <thead><tr><th>Pet</th><th>User</th><th>Submitted</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for req in recent_requests %}
+                        <tr>
+                            <td>{{ req.pet.name }}</td>
+                            <td>{{ req.user.name }}</td>
+                            <td>{{ req.submitted_at|date('M d, Y') }}</td>
+                            <td>
+                                <form action="/admin/adoptions/{{ req.id }}/approve" method="POST" style="display:inline">
+                                    <button class="btn btn--sm btn--success">Approve</button>
+                                </form>
+                                <form action="/admin/adoptions/{{ req.id }}/reject" method="POST" style="display:inline">
+                                    <button class="btn btn--sm btn--danger">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="/admin/adoptions">View all requests →</a>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}

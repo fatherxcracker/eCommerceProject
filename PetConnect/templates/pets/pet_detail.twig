@@ -1,0 +1,44 @@
+{% extends 'base.twig' %}
+
+{% block title %}{{ pet.name }}{% endblock %}
+
+{% block content %}
+<div class="pet-detail">
+    <div class="pet-detail__gallery">
+        <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}">
+    </div>
+
+    <div class="pet-detail__info">
+        <span class="badge badge--{{ pet.status }}">{{ pet.status|capitalize }}</span>
+        <h1>{{ pet.name }}</h1>
+
+        <table class="detail-table">
+            <tr><th>Species</th><td>{{ pet.species }}</td></tr>
+            <tr><th>Breed</th><td>{{ pet.breed }}</td></tr>
+            <tr><th>Age</th><td>{{ pet.age }} year{% if pet.age != 1 %}s{% endif %}</td></tr>
+            <tr><th>Size</th><td>{{ pet.size }}</td></tr>
+            <tr><th>Location</th><td>{{ pet.location }}</td></tr>
+            <tr><th>Category</th><td>{{ pet.category.name ?? 'N/A' }}</td></tr>
+        </table>
+
+        <div class="pet-detail__description">
+            <h3>About {{ pet.name }}</h3>
+            <p>{{ pet.description }}</p>
+        </div>
+
+        {% if pet.status == 'available' %}
+            {% if session.user_id %}
+                <a href="/pets/{{ pet.id }}/adopt" class="btn btn--primary btn--lg">
+                    🐾 Adopt {{ pet.name }}
+                </a>
+            {% else %}
+                <a href="/login" class="btn btn--primary btn--lg">Login to Adopt</a>
+            {% endif %}
+        {% else %}
+            <button class="btn btn--disabled" disabled>Not Available</button>
+        {% endif %}
+
+        <a href="/pets" class="btn btn--secondary">← Back to listings</a>
+    </div>
+</div>
+{% endblock %}

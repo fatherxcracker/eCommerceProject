@@ -1,0 +1,62 @@
+{% extends 'base.twig' %}
+
+{% block title %}Browse Pets{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Find Your Perfect Pet</h1>
+    <p>Browse all available animals ready for adoption.</p>
+</section>
+
+{# ── Category Filter Tabs ── #}
+<div class="category-tabs">
+    <a href="/pets" class="tab {% if not active_category %}tab--active{% endif %}">All</a>
+    {% for cat in categories %}
+        <a href="/pets/category/{{ cat.name }}"
+           class="tab {% if active_category == cat.name %}tab--active{% endif %}">
+            {{ cat.name }}
+        </a>
+    {% endfor %}
+</div>
+
+{# ── Advanced Filter Form ── #}
+<details class="filter-panel">
+    <summary>Advanced Filters</summary>
+    <form action="/pets" method="GET" class="filter-form">
+        <input type="text"   name="breed"    placeholder="Breed"    value="{{ filters.breed ?? '' }}">
+        <input type="number" name="age"      placeholder="Age"      value="{{ filters.age ?? '' }}">
+        <select name="size">
+            <option value="">Any Size</option>
+            {% for size in ['Small', 'Medium', 'Large'] %}
+                <option value="{{ size }}" {% if filters.size == size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="location" placeholder="Location" value="{{ filters.location ?? '' }}">
+        <button type="submit" class="btn btn--primary">Filter</button>
+        <a href="/pets" class="btn btn--secondary">Clear</a>
+    </form>
+</details>
+
+{# ── Pet Grid ── #}
+{% if pets is empty %}
+    <div class="empty-state">
+        <p>No pets found. Try adjusting your filters!</p>
+    </div>
+{% else %}
+    <div class="pet-grid">
+        {% for pet in pets %}
+            <article class="pet-card">
+                <a href="/pets/{{ pet.id }}">
+                    <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="pet-card__img">
+                    <div class="pet-card__body">
+                        <span class="badge badge--{{ pet.status }}">{{ pet.status|capitalize }}</span>
+                        <h2 class="pet-card__name">{{ pet.name }}</h2>
+                        <p class="pet-card__meta">{{ pet.breed }} · {{ pet.age }} yr{% if pet.age != 1 %}s{% endif %}</p>
+                        <p class="pet-card__location">📍 {{ pet.location }}</p>
+                    </div>
+                </a>
+            </article>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

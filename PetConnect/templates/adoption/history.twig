@@ -1,0 +1,50 @@
+{% extends 'base.twig' %}
+{% block title %}My Adoptions{% endblock %}
+
+{% block content %}
+<h1>My Adoptions</h1>
+
+{# Active Requests #}
+<section>
+    <h2>Pending & Recent Requests</h2>
+    {% if requests is empty %}
+        <p>No adoption requests yet. <a href="/pets">Browse pets</a>.</p>
+    {% else %}
+        <table class="data-table">
+            <thead>
+                <tr><th>Pet</th><th>Submitted</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.pet.name ?? 'N/A' }}</td>
+                    <td>{{ req.submitted_at|date('M d, Y') }}</td>
+                    <td><span class="badge badge--{{ req.status }}">{{ req.status|capitalize }}</span></td>
+                    <td><a href="/adoptions/{{ req.id }}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</section>
+
+{# Completed Adoptions #}
+<section>
+    <h2>Adopted Pets 🏠</h2>
+    {% if history is empty %}
+        <p>No completed adoptions yet.</p>
+    {% else %}
+        <div class="pet-grid">
+            {% for record in history %}
+                <article class="pet-card pet-card--adopted">
+                    <img src="{{ record.pet.image ?? '/img/default-pet.jpg' }}" alt="{{ record.pet.name }}">
+                    <div class="pet-card__body">
+                        <h3>{{ record.pet.name }}</h3>
+                        <p>Adopted {{ record.completed_at|date('M d, Y') }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

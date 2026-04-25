@@ -1,0 +1,42 @@
+{% extends 'base.twig' %}
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <h2>Admin Panel</h2>
+        <nav>
+            <a href="/admin">📊 Dashboard</a>
+            <a href="/admin/pets">🐾 Manage Pets</a>
+            <a href="/admin/users">👥 Users</a>
+            <a href="/admin/adoptions">📋 Adoptions</a>
+        </nav>
+    </aside>
+
+    <div class="admin-main">
+        <h1>Manage Users</h1>
+        <table class="data-table">
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Email</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.created_at|date('M d, Y') }}</td>
+                    <td>
+                        <form action="/admin/users/{{ user.id }}" method="POST"
+                              onsubmit="return confirm('Delete this user?')">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn--sm btn--danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
