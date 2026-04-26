@@ -43,3 +43,29 @@ document.querySelectorAll('.flash').forEach(el => {
     setTimeout(() => el.style.opacity = '0', 4000);
     setTimeout(() => el.remove(), 4500);
 });
+
+const petSearch = document.getElementById("petSearch");
+const petCards = document.querySelectorAll(".pet-card");
+
+if (petSearch) {
+    petSearch.addEventListener("input", function () {
+        const searchValue = petSearch.value.toLowerCase();
+
+        petCards.forEach(function (card) {
+            const text = card.innerText.toLowerCase();
+
+            if (text.includes(searchValue)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+}
+
+// function answerQuestion() {
+//     const answer = document.getElementById("aiAnswer");
+
+//     answer.textContent =
+//         "";
+// }

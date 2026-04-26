@@ -157,3 +157,137 @@ a:hover { text-decoration: underline; }
 .page-header { margin-bottom: 1.5rem; }
 .page-header h1 { font-size: 2rem; }
 .empty-state { text-align: center; padding: 3rem; color: var(--color-muted); }
+
+.hero{
+    width:100%;
+    padding:2rem 3rem;
+    margin:0;
+    display:block;
+}
+
+.hero__text{
+    max-width:700px;
+}
+
+.hero .btn{
+    margin-top: 1.25rem;
+}
+
+.eyebrow {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#assistant{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.assistant-box{
+    width: 100%;
+    min-height: 80px;
+
+    background: white;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -4px 12px rgba(0,0,0,.08);
+
+    padding: 1rem 2rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    box-sizing: border-box;
+    border-radius: 0;
+}
+
+.assistant-box input{
+    flex:1;
+    padding:1rem;
+    border:1px solid #ddd;
+    border-radius:12px;
+}
+
+.assistant-box button{
+    padding:.9rem 1.5rem;
+}
+
+body{
+    padding-bottom: 90px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 2rem;
+    background: white;
+}
+
+.navbar__logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f46a2f;
+    white-space: nowrap;
+}
+
+.navbar__search {
+    flex: 1;
+}
+
+.navbar__search input {
+    width: 100%;
+    padding: 1rem 1.4rem;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    font-size: 1.1rem;
+}
+
+.navbar__links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    margin-left: auto;
+    padding: 0;
+    min-width: 320px;
+}
+
+.navbar__links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.container{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding:0 3rem 2rem 3rem;
+}
+
+#pets{
+    margin-top:1rem;
+}
+
+.pet-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.pet-card{
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    padding: 1rem;
+    min-height: 220px;
+}
