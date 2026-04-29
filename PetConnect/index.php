@@ -10,8 +10,20 @@ $pets = [
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $_SESSION["flash"] = "Your adoption request was submitted successfully!";
 }
+
+
 ?>
 
+<!-- 
+    todo: - implement flash messages in base.html.twig
+          - implement security middleware to protect against CSRF and XSS attacks
+          - implement maintenance middleware to redirect to /maintenance if flag file exists
+          - implement auth middleware to redirect to /login if user is not authenticated
+          - implement admin middleware to redirect to / if user is not an admin
+
+    ADD THE BELLOW HTML TO BASE.HTML.TWIG IN TEMPLATES FOLDER 
+ 
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
