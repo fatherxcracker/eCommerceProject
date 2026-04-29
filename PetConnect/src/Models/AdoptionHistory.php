@@ -2,32 +2,25 @@
 
 namespace App\Models;
 
-class AdoptionHistory 
+class AdoptionHistory extends Model
 {
-    protected $table = 'adoption_history';
-
-    protected $fillable = [
-        'user_id',
-        'pet_id',
-        'completed_at',
-    ];
-
-    protected $casts = [
-        'completed_at' => 'datetime',
-    ];
-
-    public function user(): BelongsTo
+    protected static function tableName(): string
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return 'adoptionhistory';
     }
 
-    public function pet(): BelongsTo
+    public static function findByUser(int $userId): array
     {
-        return $this->belongsTo(Pet::class, 'pet_id');
+        return static::findWhere('user_id = ? ORDER BY completed_at DESC', [$userId]);
     }
 
-    public static function findByUser(int $userId)
+    public function user(): ?User
     {
-        return self::where('user_id', $userId)->with('pet')->get();
+        return User::find((int) ($this->bean->user_id ?? 0));
+    }
+
+    public function pet(): ?Pet
+    {
+        return Pet::find((int) ($this->bean->pet_id ?? 0));
     }
 }

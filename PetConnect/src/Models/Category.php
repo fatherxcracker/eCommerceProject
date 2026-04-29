@@ -4,12 +4,8 @@ namespace App\Models;
 
 class Category extends Model
 {
-    protected $table = 'categories';
-
-    protected $fillable = ['name'];
-
-    public function pets(): HasMany
+    public function pets(): array
     {
-        return $this->hasMany(Pet::class, 'category_id');
+        return Pet::findByCategory((int) $this->id);
     }
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PetConnect{% endblock %}</title>
+    <link rel="stylesheet" href="{{ base_path }}/Assets/styles.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="navbar__logo" href="{{ base_path }}/pets">PetConnect</a>
+
+    <div class="navbar__search">
+        <input type="text" id="live-search" placeholder="Search pets...">
+        <div id="search-results" class="search-dropdown hidden"></div>
+    </div>
+
+    <ul class="navbar__links">
+        <li><a href="{{ base_path }}/pets">Browse Pets</a></li>
+        {% if session.user_id is defined and session.user_id %}
+            <li><a href="{{ base_path }}/adoptions">My Adoptions</a></li>
+            <li><a href="{{ base_path }}/profile">{{ session.user_name }}</a></li>
+            {% if session.user_role == 'admin' %}
+                <li><a href="{{ base_path }}/admin" class="btn btn--admin btn--sm">Admin</a></li>
+            {% endif %}
+            <li>
+                <form method="POST" action="{{ base_path }}/logout" style="display:inline">
+                    <button type="submit" class="btn btn--sm">Logout</button>
+                </form>
+            </li>
+        {% else %}
+            <li><a href="{{ base_path }}/login">Login</a></li>
+            <li><a href="{{ base_path }}/register">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% if flash is defined and flash %}
+    <div class="flash-messages">
+        {% for type, messages in flash %}
+            {% for message in messages %}
+                <div class="flash flash--{{ type }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<script>
+    const BASE_PATH = '{{ base_path }}';
+</script>
+<script src="{{ base_path }}/Assets/app.js"></script>
+{% block scripts %}{% endblock %}
+
+</body>
+</html>
