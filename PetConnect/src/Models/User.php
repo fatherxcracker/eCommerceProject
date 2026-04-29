@@ -2,48 +2,23 @@
 
 namespace App\Models;
 
-class User
+class User extends Model
 {
-    protected $table = 'users';
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password_hash',
-        'role',
-        'totp_secret',
-    ];
-
-    protected $hidden = [
-        'password_hash',
-        'totp_secret',
-    ];
-
     const ROLE_USER  = 'user';
     const ROLE_ADMIN = 'admin';
 
-    public function adoptionRequests(): HasMany
+    public static function findByEmail(string $email): ?static
     {
-        return $this->hasMany(AdoptionRequest::class, 'user_id');
-    }
-
-    public function adoptionHistory(): HasMany
-    {
-        return $this->hasMany(AdoptionHistory::class, 'user_id');
-    }
-
-    public static function findByEmail(string $email): ?self
-    {
-        return self::where('email', $email)->first();
+        return static::findOne('email = ?', [strtolower(trim($email))]);
     }
 
     public function verifyPassword(string $plainPassword): bool
     {
-        return password_verify($plainPassword, $this->password_hash);
+        return password_verify($plainPassword, $this->bean->password_hash ?? '');
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === self::ROLE_ADMIN;
+        return ($this->bean->role ?? '') === self::ROLE_ADMIN;
     }
 }

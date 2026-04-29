@@ -1,120 +1,168 @@
 <?php
+
 session_start();
 
-$pets = [
-    ["name" => "Bella", "type" => "Dog", "breed" => "Golden Retriever", "age" => "2 years", "location" => "Montreal", "status" => "Available"],
-    ["name" => "Milo", "type" => "Cat", "breed" => "Tabby", "age" => "1 year", "location" => "Laval", "status" => "Available"],
-    ["name" => "Rocky", "type" => "Dog", "breed" => "Husky", "age" => "3 years", "location" => "Longueuil", "status" => "Pending"],
-];
+use App\Controllers\AdminController;
+use App\Controllers\AdoptionController;
+use App\Controllers\AuthController;
+use App\Controllers\PetController;
+use App\Middleware\AdminMiddleware;
+use App\Middleware\AuthMiddleware;
+use App\Middleware\FlashMiddleware;
+use App\Middleware\MaintenanceMiddleware;
+use App\Middleware\SecurityMiddleware;
+use DI\Container;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use RedBeanPHP\R;
+use Slim\Factory\AppFactory;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $_SESSION["flash"] = "Your adoption request was submitted successfully!";
+require __DIR__ . '/vendor/autoload.php';
+
+// ── 1. DATABASE ───────────────────────────────────────────────────────────────
+if (!is_dir(__DIR__ . '/var')) {
+    mkdir(__DIR__ . '/var', 0755, true);
 }
+R::setup('sqlite:' . __DIR__ . '/var/petconnect.db');
 
+// ── 2. BASE PATH ──────────────────────────────────────────────────────────────
+$basePath = rtrim(str_ireplace('index.php', '', $_SERVER['SCRIPT_NAME']), '/');
 
-?>
+// ── 3. TWIG ───────────────────────────────────────────────────────────────────
+$twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
+$twig->getEnvironment()->addGlobal('base_path', $basePath);
 
-<!-- 
-    todo: - implement flash messages in base.html.twig
-          - implement security middleware to protect against CSRF and XSS attacks
-          - implement maintenance middleware to redirect to /maintenance if flag file exists
-          - implement auth middleware to redirect to /login if user is not authenticated
-          - implement admin middleware to redirect to / if user is not an admin
+// ── 4. DI CONTAINER ───────────────────────────────────────────────────────────
+$container = new Container();
+AppFactory::setContainer($container);
 
-    ADD THE BELLOW HTML TO BASE.HTML.TWIG IN TEMPLATES FOLDER 
- 
--->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>PetConnect</title>
-    <link rel="stylesheet" href="Assets/styles.css">
-</head>
-<body>
+$container->set(PetController::class,      fn() => new PetController($twig, $basePath));
+$container->set(AuthController::class,     fn() => new AuthController($twig, $basePath));
+$container->set(AdoptionController::class, fn() => new AdoptionController($twig, $basePath));
+$container->set(AdminController::class,    fn() => new AdminController($twig, $basePath));
 
-<?php if (!empty($_SESSION["flash"])): ?>
-    <div class="flash flash--success">
-        <?= htmlspecialchars($_SESSION["flash"]) ?>
-    </div>
-    <?php unset($_SESSION["flash"]); ?>
-<?php endif; ?>
+// ── 5. APPLICATION ────────────────────────────────────────────────────────────
+$app = AppFactory::create();
+$app->setBasePath($basePath);
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
 
-<nav class="navbar">
-    <div class="navbar__logo">PetConnect</div>
+// ── 6. MIDDLEWARE ─────────────────────────────────────────────────────────────
+$app->add(TwigMiddleware::create($app, $twig));
+$app->add(new FlashMiddleware($twig));
+$app->add(new SecurityMiddleware($app->getResponseFactory(), $basePath));
+$app->add(new MaintenanceMiddleware($app->getResponseFactory(), $basePath));
+$app->addErrorMiddleware(true, true, true);
 
-    <div class="navbar__search">
-        <input type="text" id="petSearch" placeholder="Search pets...">
-    </div>
+// ── 7. SEED ROUTE ─────────────────────────────────────────────────────────────
+$app->get('/seed', function (Request $request, Response $response) use ($basePath): Response {
+    R::wipe('adoptionhistory');
+    R::wipe('adoptionrequest');
+    R::wipe('pet');
+    R::wipe('category');
 
-    <ul class="navbar__links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#pets">Adopt</a></li>
-        <li><a href="#assistant">AI Help</a></li>
-    </ul>
-</nav>
+    $categories = ['Dog', 'Cat', 'Bird', 'Rabbit'];
+    $catIds     = [];
+    foreach ($categories as $name) {
+        $cat       = R::dispense('category');
+        $cat->name = $name;
+        R::store($cat);
+        $catIds[$name] = $cat->id;
+    }
 
-<section class="hero">
-    <div class="hero__text">
-        <p class="eyebrow">Find your new best friend</p>
-        <h1>Adopt a pet and give them a loving home.</h1>
-        <p>
-            Browse available pets, search  and send an adoption request.
-        </p>
-        <a href="#pets" class="btn btn--primary btn--lg">Browse Pets</a>
-    </div>
+    $pets = [
+        ['name' => 'Bella',  'species' => 'Dog',    'breed' => 'Golden Retriever', 'age' => 2, 'size' => 'Large',  'location' => 'Montreal',  'status' => 'available', 'category_id' => $catIds['Dog'],    'description' => 'Bella is a friendly and energetic Golden Retriever who loves to play fetch and cuddle on the couch.'],
+        ['name' => 'Milo',   'species' => 'Cat',    'breed' => 'Tabby',            'age' => 1, 'size' => 'Small',  'location' => 'Laval',     'status' => 'available', 'category_id' => $catIds['Cat'],    'description' => 'Milo is a curious tabby cat who loves sunny spots and cozy blankets.'],
+        ['name' => 'Rocky',  'species' => 'Dog',    'breed' => 'Husky',            'age' => 3, 'size' => 'Large',  'location' => 'Longueuil', 'status' => 'pending',   'category_id' => $catIds['Dog'],    'description' => 'Rocky is an adventurous Husky who needs a home with a big yard and active owners.'],
+        ['name' => 'Luna',   'species' => 'Cat',    'breed' => 'Siamese',          'age' => 2, 'size' => 'Small',  'location' => 'Montreal',  'status' => 'available', 'category_id' => $catIds['Cat'],    'description' => 'Luna is an elegant Siamese with striking blue eyes and a gentle personality.'],
+        ['name' => 'Max',    'species' => 'Dog',    'breed' => 'Labrador',         'age' => 4, 'size' => 'Large',  'location' => 'Brossard',  'status' => 'available', 'category_id' => $catIds['Dog'],    'description' => 'Max is a loyal and patient Labrador — perfect for families with children.'],
+        ['name' => 'Tweety', 'species' => 'Bird',   'breed' => 'Canary',           'age' => 1, 'size' => 'Small',  'location' => 'Montreal',  'status' => 'available', 'category_id' => $catIds['Bird'],   'description' => 'Tweety fills every room with cheerful song and is easy to care for.'],
+        ['name' => 'Coco',   'species' => 'Rabbit', 'breed' => 'Holland Lop',      'age' => 1, 'size' => 'Small',  'location' => 'Laval',     'status' => 'available', 'category_id' => $catIds['Rabbit'], 'description' => 'Coco is a fluffy Holland Lop rabbit who loves hay, veggies, and gentle cuddles.'],
+        ['name' => 'Rex',    'species' => 'Dog',    'breed' => 'German Shepherd',  'age' => 5, 'size' => 'Large',  'location' => 'Montreal',  'status' => 'adopted',   'category_id' => $catIds['Dog'],    'description' => 'Rex is a well-trained German Shepherd who found his forever home.'],
+    ];
 
-    <!-- <div class="hero__card">
-        <h2>Today’s Match</h2>
-        <p>Bella is friendly, calm, and ready for adoption.</p>
-        <span class="badge badge--available">Available</span>
-    </div>
-</section> -->
+    foreach ($pets as $data) {
+        $bean = R::dispense('pet');
+        foreach ($data as $key => $value) {
+            $bean->$key = $value;
+        }
+        $bean->image = null;
+        R::store($bean);
+    }
 
-<section class="container" id="pets">
-    <h2>Available Pets</h2>
+    // Seed one admin user
+    $existing = R::findOne('user', 'email = ?', ['admin@petconnect.ca']);
+    if (!$existing) {
+        $admin                = R::dispense('user');
+        $admin->name          = 'Admin';
+        $admin->email         = 'admin@petconnect.ca';
+        $admin->password_hash = password_hash('admin1234', PASSWORD_BCRYPT);
+        $admin->role          = 'admin';
+        R::store($admin);
+    }
 
-    <div class="pet-grid" id="petGrid">
-        <?php foreach ($pets as $pet): ?>
-            <article class="pet-card">
-                <div class="pet-card__body">
-                    <span class="badge badge--<?= strtolower($pet["status"]) ?>">
-                        <?= htmlspecialchars($pet["status"]) ?>
-                    </span>
+    $response->getBody()->write(
+        '<h1 style="font-family:sans-serif;padding:2rem">Database seeded!</h1>' .
+        '<p style="font-family:sans-serif;padding:0 2rem">' .
+        count($pets) . ' pets · ' . count($categories) . ' categories · 1 admin user (admin@petconnect.ca / admin1234)' .
+        '</p><p style="font-family:sans-serif;padding:0 2rem">' .
+        '<a href="' . $basePath . '/pets">Browse pets →</a></p>'
+    );
+    return $response;
+});
 
-                    <h2 class="pet-card__name"><?= htmlspecialchars($pet["name"]) ?></h2>
+// ── 8. HOME ───────────────────────────────────────────────────────────────────
+$app->get('/', function (Request $request, Response $response) use ($basePath): Response {
+    return $response->withHeader('Location', $basePath . '/pets')->withStatus(302);
+});
 
-                    <p class="pet-card__meta">
-                        <?= htmlspecialchars($pet["type"]) ?> ·
-                        <?= htmlspecialchars($pet["breed"]) ?> ·
-                        <?= htmlspecialchars($pet["age"]) ?>
-                    </p>
+// ── 9. PET ROUTES ─────────────────────────────────────────────────────────────
+// Specific routes before parameterised {id}
+$app->get('/pets',                           [PetController::class, 'index']);
+$app->get('/pets/search',                    [PetController::class, 'search']);
+$app->get('/pets/live-search',               [PetController::class, 'liveSearch']);
+$app->get('/pets/category/{category}',       [PetController::class, 'filter']);
+$app->get('/pets/{id:[0-9]+}',              [PetController::class, 'show']);
 
-                    <p class="pet-card__location">
-                        📍 <?= htmlspecialchars($pet["location"]) ?>
-                    </p>
+// ── 10. AUTH ROUTES ───────────────────────────────────────────────────────────
+$app->get('/register',       [AuthController::class, 'showRegister']);
+$app->post('/register',      [AuthController::class, 'register']);
+$app->get('/login',          [AuthController::class, 'showLogin']);
+$app->post('/login',         [AuthController::class, 'login']);
+$app->get('/2fa',            [AuthController::class, 'show2FA']);
+$app->post('/2fa',           [AuthController::class, 'verify2FA']);
+$app->post('/logout',        [AuthController::class, 'logout']);
+$app->get('/profile',        [AuthController::class, 'profile']);
+$app->post('/profile',       [AuthController::class, 'updateProfile']);
+$app->get('/reset-password', [AuthController::class, 'showResetPassword']);
+$app->post('/reset-password',[AuthController::class, 'resetPassword']);
 
-                    <form method="POST">
-                        <button class="btn btn--primary btn--full" type="submit">
-                            Request Adoption
-                        </button>
-                    </form>
-                </div>
-            </article>
-        <?php endforeach; ?>
-    </div>
-</section>
+// ── 11. ADOPTION ROUTES ───────────────────────────────────────────────────────
+$app->get('/pets/{id:[0-9]+}/adopt',  [AdoptionController::class, 'showApplyForm']);
+$app->post('/pets/{id:[0-9]+}/adopt', [AdoptionController::class, 'apply']);
+$app->get('/adoptions',               [AdoptionController::class, 'history']);
+$app->get('/adoptions/{id:[0-9]+}',  [AdoptionController::class, 'status']);
 
-<section id="assistant">
-    <div class="assistant-box">
-        <h2>AI Pet Assistant</h2>
-        <p>Have a question?</p>
-        <input type="text" id="aiQuestion" placeholder="Ask: What pet is best for an apartment?">
-        <button class="btn btn--secondary" onclick="answerQuestion()">Ask</button>
-        <p id="aiAnswer"></p>
-    </div>
-</section>
+// ── 12. ADMIN ROUTES (protected) ─────────────────────────────────────────────
+$authMiddleware  = new AuthMiddleware($app->getResponseFactory(), $basePath);
+$adminMiddleware = new AdminMiddleware($app->getResponseFactory(), $basePath);
 
-<script src="Assets/app.js"></script>
-</body>
-</html>
+$app->group('/admin', function (\Slim\Routing\RouteCollectorProxy $group) {
+    $group->get('',                                 [AdminController::class, 'dashboard']);
+    $group->get('/pets',                            [AdminController::class, 'managePets']);
+    $group->get('/pets/create',                     [PetController::class,   'create']);
+    $group->post('/pets',                           [PetController::class,   'store']);
+    $group->get('/pets/{id:[0-9]+}/edit',          [PetController::class,   'edit']);
+    $group->post('/pets/{id:[0-9]+}',              [PetController::class,   'update']);
+    $group->post('/pets/{id:[0-9]+}/delete',       [PetController::class,   'delete']);
+    $group->get('/users',                           [AdminController::class, 'manageUsers']);
+    $group->post('/users/{id:[0-9]+}/delete',      [AdminController::class, 'deleteUser']);
+    $group->get('/adoptions',                       [AdminController::class, 'manageAdoptions']);
+    $group->post('/adoptions/{id:[0-9]+}/approve', [AdoptionController::class, 'approve']);
+    $group->post('/adoptions/{id:[0-9]+}/reject',  [AdoptionController::class, 'reject']);
+})->add($adminMiddleware)->add($authMiddleware);
+
+// ── 13. RUN ───────────────────────────────────────────────────────────────────
+$app->run();

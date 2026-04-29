@@ -1,7 +1,6 @@
 {
-    "name": "petconnect/petconnect",
-    "description": "PetConnect pet adoption platform",
-    "type": "project",
+    "name": "petconnect/app",
+    "description": "PetConnect — Pet adoption platform",
     "require": {
         "php": ">=8.1",
         "slim/slim": "^4.0",

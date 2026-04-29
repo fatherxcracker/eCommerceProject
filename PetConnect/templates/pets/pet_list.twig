@@ -10,9 +10,9 @@
 
 {# ── Category Filter Tabs ── #}
 <div class="category-tabs">
-    <a href="/pets" class="tab {% if not active_category %}tab--active{% endif %}">All</a>
+    <a href="{{ base_path }}/pets" class="tab {% if not active_category %}tab--active{% endif %}">All</a>
     {% for cat in categories %}
-        <a href="/pets/category/{{ cat.name }}"
+        <a href="{{ base_path }}/pets/category/{{ cat.name }}"
            class="tab {% if active_category == cat.name %}tab--active{% endif %}">
             {{ cat.name }}
         </a>
@@ -22,7 +22,7 @@
 {# ── Advanced Filter Form ── #}
 <details class="filter-panel">
     <summary>Advanced Filters</summary>
-    <form action="/pets" method="GET" class="filter-form">
+    <form action="{{ base_path }}/pets" method="GET" class="filter-form">
         <input type="text"   name="breed"    placeholder="Breed"    value="{{ filters.breed ?? '' }}">
         <input type="number" name="age"      placeholder="Age"      value="{{ filters.age ?? '' }}">
         <select name="size">
@@ -33,7 +33,7 @@
         </select>
         <input type="text" name="location" placeholder="Location" value="{{ filters.location ?? '' }}">
         <button type="submit" class="btn btn--primary">Filter</button>
-        <a href="/pets" class="btn btn--secondary">Clear</a>
+        <a href="{{ base_path }}/pets" class="btn btn--secondary">Clear</a>
     </form>
 </details>
 
@@ -46,8 +46,8 @@
     <div class="pet-grid">
         {% for pet in pets %}
             <article class="pet-card">
-                <a href="/pets/{{ pet.id }}">
-                    <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="pet-card__img">
+                <a href="{{ base_path }}/pets/{{ pet.id }}">
+                    <img src="{{ pet.image ? base_path ~ pet.image : base_path ~ '/Assets/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="pet-card__img">
                     <div class="pet-card__body">
                         <span class="badge badge--{{ pet.status }}">{{ pet.status|capitalize }}</span>
                         <h2 class="pet-card__name">{{ pet.name }}</h2>

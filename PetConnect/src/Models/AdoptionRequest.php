@@ -2,52 +2,54 @@
 
 namespace App\Models;
 
-class AdoptionRequest
+use RedBeanPHP\R;
+
+class AdoptionRequest extends Model
 {
-    protected $table = 'adoption_requests';
-
-    protected $fillable = [
-        'user_id',
-        'pet_id',
-        'status',
-        'message',
-        'submitted_at',
-        'reviewed_at',
-    ];
-
-    protected $casts = [
-        'submitted_at' => 'datetime',
-        'reviewed_at'  => 'datetime',
-    ];
-
     const STATUS_PENDING  = 'pending';
     const STATUS_APPROVED = 'approved';
     const STATUS_REJECTED = 'rejected';
 
-    public function user(): BelongsTo
+    protected static function tableName(): string
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return 'adoptionrequest';
     }
 
-    public function pet(): BelongsTo
+    public static function findByUser(int $userId): array
     {
-        return $this->belongsTo(Pet::class, 'pet_id');
+        return static::findWhere('user_id = ? ORDER BY submitted_at DESC', [$userId]);
     }
 
-    public static function findByUser(int $userId)
+    public static function findByPet(int $petId): array
     {
-        return self::where('user_id', $userId)->with('pet')->get();
+        return static::findWhere('pet_id = ?', [$petId]);
     }
 
-    public static function findByPet(int $petId)
+    public static function rejectOtherPending(int $petId, int $exceptId): void
     {
-        return self::where('pet_id', $petId)->with('user')->get();
+        $others = static::findWhere(
+            'pet_id = ? AND id != ? AND status = ?',
+            [$petId, $exceptId, self::STATUS_PENDING]
+        );
+        foreach ($others as $req) {
+            $req->updateStatus(self::STATUS_REJECTED);
+        }
     }
 
-    public function updateStatus(string $status): bool
+    public function user(): ?User
     {
-        $this->status      = $status;
-        $this->reviewed_at = now();
-        return $this->save();
+        return User::find((int) ($this->bean->user_id ?? 0));
+    }
+
+    public function pet(): ?Pet
+    {
+        return Pet::find((int) ($this->bean->pet_id ?? 0));
+    }
+
+    public function updateStatus(string $status): void
+    {
+        $this->bean->status      = $status;
+        $this->bean->reviewed_at = date('Y-m-d H:i:s');
+        R::store($this->bean);
     }
 }

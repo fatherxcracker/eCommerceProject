@@ -1,16 +1,23 @@
-<?php
+<?php 
 
-namespace App\Middleware\Maintenance;    // namespace App\Middleware\Maintenance;   
+namespace App\Middleware;
 
-use App\Response\SlimResponse;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as Handler;     
 
 class MaintenanceMiddleware
-{
-    public function process(Request $request, Handler $handler): Response
+{    
+    public function __construct(
+        private ResponseFactoryInterface $responseFactory,
+        private string $basePath = ''
+    ) {}
+
+    public function __invoke(Request $request, Handler $handler): Response                  
     {
-        $response = new SlimResponse();
-        return $response
-            ->withHeader('Location', '/maintenance')
-            ->withStatus(302);
+        $response = $this->responseFactory->createResponse(503);
+        $response->getBody()->write('Site is under maintenance. Please check back later.');
+        return $response;
     }
 }

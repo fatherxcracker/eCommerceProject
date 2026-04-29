@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "de1aa97ecfa648c160518141793d31eb",
     "packages": [
         {
@@ -227,6 +228,11 @@
             "time": "2021-10-12T18:52:29+00:00"
         },
         {
+=======
+    "content-hash": "0ba65ba9a311d6b3cda06a7ba581da64",
+    "packages": [
+        {
+>>>>>>> 6a6b3ff86d51cdba42554f48519674fe3c1d3047
             "name": "fig/http-message-util",
             "version": "1.1.5",
             "source": {
@@ -328,6 +334,70 @@
             "time": "2025-05-01T17:41:56+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "laravel/serializable-closure",
+            "version": "v2.0.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/serializable-closure.git",
+                "reference": "b566ee0dd251f3c4078bed003a7ce015f5ea6dce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/b566ee0dd251f3c4078bed003a7ce015f5ea6dce",
+                "reference": "b566ee0dd251f3c4078bed003a7ce015f5ea6dce",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+                "nesbot/carbon": "^2.67|^3.0",
+                "pestphp/pest": "^2.36|^3.0|^4.0",
+                "phpstan/phpstan": "^2.0",
+                "symfony/var-dumper": "^6.2.0|^7.0.0|^8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\SerializableClosure\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Nuno Maduro",
+                    "email": "nuno@laravel.com"
+                }
+            ],
+            "description": "Laravel Serializable Closure provides an easy and secure way to serialize closures in PHP.",
+            "keywords": [
+                "closure",
+                "laravel",
+                "serializable"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/serializable-closure/issues",
+                "source": "https://github.com/laravel/serializable-closure"
+            },
+            "time": "2026-04-16T14:03:50+00:00"
+        },
+        {
+>>>>>>> 6a6b3ff86d51cdba42554f48519674fe3c1d3047
             "name": "nikic/fast-route",
             "version": "v1.3.0",
             "source": {
@@ -378,6 +448,137 @@
             "time": "2018-02-13T20:26:39+00:00"
         },
         {
+<<<<<<< HEAD
+=======
+            "name": "php-di/invoker",
+            "version": "2.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHP-DI/Invoker.git",
+                "reference": "3c1ddfdef181431fbc4be83378f6d036d59e81e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHP-DI/Invoker/zipball/3c1ddfdef181431fbc4be83378f6d036d59e81e1",
+                "reference": "3c1ddfdef181431fbc4be83378f6d036d59e81e1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "psr/container": "^1.0|^2.0"
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1.8",
+                "mnapoli/hard-mode": "~0.3.0",
+                "phpunit/phpunit": "^9.0 || ^10 || ^11 || ^12"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Invoker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Generic and extensible callable invoker",
+            "homepage": "https://github.com/PHP-DI/Invoker",
+            "keywords": [
+                "callable",
+                "dependency",
+                "dependency-injection",
+                "injection",
+                "invoke",
+                "invoker"
+            ],
+            "support": {
+                "issues": "https://github.com/PHP-DI/Invoker/issues",
+                "source": "https://github.com/PHP-DI/Invoker/tree/2.3.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-08-30T10:22:22+00:00"
+        },
+        {
+            "name": "php-di/php-di",
+            "version": "7.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHP-DI/PHP-DI.git",
+                "reference": "f88054cc052e40dbe7b383c8817c19442d480352"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHP-DI/PHP-DI/zipball/f88054cc052e40dbe7b383c8817c19442d480352",
+                "reference": "f88054cc052e40dbe7b383c8817c19442d480352",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/serializable-closure": "^1.0 || ^2.0",
+                "php": ">=8.0",
+                "php-di/invoker": "^2.0",
+                "psr/container": "^1.1 || ^2.0"
+            },
+            "provide": {
+                "psr/container-implementation": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3",
+                "friendsofphp/proxy-manager-lts": "^1",
+                "mnapoli/phpunit-easymock": "^1.3",
+                "phpunit/phpunit": "^9.6 || ^10 || ^11",
+                "vimeo/psalm": "^5|^6"
+            },
+            "suggest": {
+                "friendsofphp/proxy-manager-lts": "Install it if you want to use lazy injection (version ^1)"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "DI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The dependency injection container for humans",
+            "homepage": "https://php-di.org/",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interop",
+                "dependency injection",
+                "di",
+                "ioc",
+                "psr11"
+            ],
+            "support": {
+                "issues": "https://github.com/PHP-DI/PHP-DI/issues",
+                "source": "https://github.com/PHP-DI/PHP-DI/tree/7.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/php-di/php-di",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-08-16T11:10:48+00:00"
+        },
+        {
+>>>>>>> 6a6b3ff86d51cdba42554f48519674fe3c1d3047
             "name": "psr/container",
             "version": "2.0.2",
             "source": {
@@ -746,6 +947,7 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "robthree/twofactorauth",
             "version": "v2.1.0",
             "source": {
@@ -827,6 +1029,8 @@
             "time": "2023-11-14T12:50:27+00:00"
         },
         {
+=======
+>>>>>>> 6a6b3ff86d51cdba42554f48519674fe3c1d3047
             "name": "slim/psr7",
             "version": "1.8.0",
             "source": {
@@ -1402,6 +1606,7 @@
             "time": "2024-09-09T11:45:10+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "symfony/translation",
             "version": "v7.4.8",
             "source": {
@@ -1584,6 +1789,8 @@
             "time": "2025-07-15T13:41:35+00:00"
         },
         {
+=======
+>>>>>>> 6a6b3ff86d51cdba42554f48519674fe3c1d3047
             "name": "twig/twig",
             "version": "v3.24.0",
             "source": {

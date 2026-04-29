@@ -14,15 +14,15 @@ if (searchInput) {
         }
 
         debounceTimer = setTimeout(async () => {
-            const res  = await fetch(`/pets/live-search?q=${encodeURIComponent(query)}`);
+            const res  = await fetch(`${BASE_PATH}/pets/live-search?q=${encodeURIComponent(query)}`);
             const pets = await res.json();
 
             if (pets.length === 0) {
                 searchResults.innerHTML = '<div class="search-dropdown__item">No pets found</div>';
             } else {
                 searchResults.innerHTML = pets.map(pet => `
-                    <a href="/pets/${pet.id}" class="search-dropdown__item">
-                        <img src="${pet.image ?? '/img/default-pet.jpg'}" alt="${pet.name}">
+                    <a href="${BASE_PATH}/pets/${pet.id}" class="search-dropdown__item">
+                        <img src="${pet.image ? BASE_PATH + pet.image : BASE_PATH + '/Assets/img/default-pet.jpg'}" alt="${pet.name}">
                         <span>${pet.name} <small>${pet.breed}</small></span>
                     </a>
                 `).join('');

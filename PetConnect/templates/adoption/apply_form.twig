@@ -4,14 +4,14 @@
 {% block content %}
 <div class="form-page">
     <div class="adopt-header">
-        <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="adopt-header__img">
+        <img src="{{ pet.image ? base_path ~ pet.image : base_path ~ '/Assets/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="adopt-header__img">
         <div>
             <h1>Adopt {{ pet.name }}</h1>
             <p>{{ pet.breed }} · {{ pet.age }} yrs · {{ pet.location }}</p>
         </div>
     </div>
 
-    <form action="/pets/{{ pet.id }}/adopt" method="POST" class="form-card">
+    <form action="{{ base_path }}/pets/{{ pet.id }}/adopt" method="POST" class="form-card">
         <div class="form-group">
             <label for="message">Tell us why you'd be a great match for {{ pet.name }}</label>
             <textarea id="message" name="message" rows="6"
@@ -20,7 +20,7 @@
         </div>
         <div class="form-actions">
             <button type="submit" class="btn btn--primary">Submit Adoption Request</button>
-            <a href="/pets/{{ pet.id }}" class="btn btn--secondary">Cancel</a>
+            <a href="{{ base_path }}/pets/{{ pet.id }}" class="btn btn--secondary">Cancel</a>
         </div>
     </form>
 </div>

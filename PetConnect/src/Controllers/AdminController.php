@@ -5,13 +5,15 @@ namespace App\Controllers;
 use App\Models\AdoptionRequest;
 use App\Models\Pet;
 use App\Models\User;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 
 class AdminController extends BaseController
 {
-    public function __construct(Twig $view, private Database $db)
+    public function __construct(Twig $view, string $basePath = '')
     {
-        parent::__construct($view);
+        parent::__construct($view, $basePath);
     }
 
     public function dashboard(Request $request, Response $response): Response
@@ -19,28 +21,27 @@ class AdminController extends BaseController
         return $this->render($response, 'admin/dashboard.twig', [
             'stats' => [
                 'total_pets'       => Pet::count(),
-                'available_pets'   => Pet::where('status', Pet::STATUS_AVAILABLE)->count(),
-                'adopted_pets'     => Pet::where('status', Pet::STATUS_ADOPTED)->count(),
-                'total_users'      => User::where('role', User::ROLE_USER)->count(),
-                'pending_requests' => AdoptionRequest::where('status', AdoptionRequest::STATUS_PENDING)->count(),
+                'available_pets'   => Pet::count('status = ?', [Pet::STATUS_AVAILABLE]),
+                'adopted_pets'     => Pet::count('status = ?', [Pet::STATUS_ADOPTED]),
+                'total_users'      => User::count('role = ?', [User::ROLE_USER]),
+                'pending_requests' => AdoptionRequest::count('status = ?', [AdoptionRequest::STATUS_PENDING]),
             ],
-            'recent_requests' => AdoptionRequest::with(['user', 'pet'])
-                ->where('status', AdoptionRequest::STATUS_PENDING)
-                ->latest()
-                ->take(5)
-                ->get(),
+            'recent_requests' => AdoptionRequest::findWhere(
+                'status = ? ORDER BY submitted_at DESC LIMIT 5',
+                [AdoptionRequest::STATUS_PENDING]
+            ),
         ]);
     }
 
     public function managePets(Request $request, Response $response): Response
     {
-        $pets = Pet::with('category')->latest()->get();
+        $pets = Pet::all('ORDER BY id DESC');
         return $this->render($response, 'admin/dashboard.twig', ['pets' => $pets, 'view' => 'pets']);
     }
 
     public function manageUsers(Request $request, Response $response): Response
     {
-        $users = User::where('role', User::ROLE_USER)->latest()->get();
+        $users = User::findWhere('role = ?', [User::ROLE_USER]);
         return $this->render($response, 'admin/user_list.twig', ['users' => $users]);
     }
 
@@ -58,7 +59,7 @@ class AdminController extends BaseController
 
     public function manageAdoptions(Request $request, Response $response): Response
     {
-        $requests = AdoptionRequest::with(['user', 'pet'])->latest()->get();
+        $requests = AdoptionRequest::all('ORDER BY submitted_at DESC');
         return $this->render($response, 'admin/adoption_mgmt.twig', ['requests' => $requests]);
     }
 }

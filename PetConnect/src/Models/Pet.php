@@ -2,65 +2,54 @@
 
 namespace App\Models;
 
-class Pet 
+class Pet extends Model
 {
-    protected $table = 'pets';
-
-    protected $fillable = [
-        'name',
-        'species',
-        'breed',
-        'age',
-        'size',
-        'location',
-        'description',
-        'image',
-        'status',
-        'category_id',
-    ];
-
     const STATUS_AVAILABLE = 'available';
     const STATUS_ADOPTED   = 'adopted';
     const STATUS_PENDING   = 'pending';
 
-    public function category(): BelongsTo
+    public static function search(string $query): array
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        if (trim($query) === '') {
+            return static::all('ORDER BY id DESC');
+        }
+        return static::findWhere(
+            'name LIKE ? OR breed LIKE ? OR species LIKE ?',
+            ["%$query%", "%$query%", "%$query%"]
+        );
     }
 
-    public function adoptionRequests(): HasMany
+    public static function filter(array $params): array
     {
-        return $this->hasMany(AdoptionRequest::class, 'pet_id');
+        $conditions = [];
+        $bindings   = [];
+
+        if (!empty($params['breed']))    { $conditions[] = 'breed = ?';       $bindings[] = $params['breed']; }
+        if (!empty($params['age']))      { $conditions[] = 'age = ?';         $bindings[] = (int) $params['age']; }
+        if (!empty($params['size']))     { $conditions[] = 'size = ?';        $bindings[] = $params['size']; }
+        if (!empty($params['location'])) { $conditions[] = 'location LIKE ?'; $bindings[] = '%' . $params['location'] . '%'; }
+        if (!empty($params['category'])) { $conditions[] = 'category_id = ?'; $bindings[] = (int) $params['category']; }
+
+        if (empty($conditions)) {
+            return static::all('ORDER BY id DESC');
+        }
+
+        return static::findWhere(implode(' AND ', $conditions) . ' ORDER BY id DESC', $bindings);
     }
 
-    public static function findByCategory(int $categoryId)
+    public static function findByCategory(int $categoryId): array
     {
-        return self::where('category_id', $categoryId)->get();
+        return static::findWhere('category_id = ? ORDER BY id DESC', [$categoryId]);
     }
 
-    public static function search(string $query)
+    public function category(): ?Category
     {
-        return self::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('breed', 'LIKE', "%{$query}%")
-            ->orWhere('species', 'LIKE', "%{$query}%")
-            ->get();
-    }
-
-    public static function filter(array $params)
-    {
-        $q = self::query();
-
-        if (!empty($params['breed']))    $q->where('breed', $params['breed']);
-        if (!empty($params['age']))      $q->where('age', $params['age']);
-        if (!empty($params['size']))     $q->where('size', $params['size']);
-        if (!empty($params['location'])) $q->where('location', 'LIKE', "%{$params['location']}%");
-        if (!empty($params['category'])) $q->where('category_id', $params['category']);
-
-        return $q->get();
+        $catId = (int) ($this->bean->category_id ?? 0);
+        return $catId ? Category::find($catId) : null;
     }
 
     public function isAvailable(): bool
     {
-        return $this->status === self::STATUS_AVAILABLE;
+        return ($this->bean->status ?? '') === self::STATUS_AVAILABLE;
     }
 }
