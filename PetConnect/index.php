@@ -3,7 +3,7 @@
 session_start();
 
 //set maintenance mode to false if we finish maintenance
-define('MAINTENANCE_MODE', true);
+define('MAINTENANCE_MODE', false);
 
 use App\Controllers\AdminController;
 use App\Controllers\AdoptionController;
@@ -13,7 +13,7 @@ use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\FlashMiddleware;
 use App\Middleware\MaintenanceMiddleware;
-use App\Middleware\SecurityMiddleware;
+use App\Middleware\SecurityHeaderMiddleware;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -55,9 +55,19 @@ $app->addRoutingMiddleware();
 // ── 6. MIDDLEWARE ─────────────────────────────────────────────────────────────
 $app->add(TwigMiddleware::create($app, $twig));
 $app->add(new FlashMiddleware($twig));
-$app->add(new SecurityMiddleware($app->getResponseFactory(), $basePath));
 $app->add(new MaintenanceMiddleware($app->getResponseFactory(), $twig, $basePath));
-$app->addErrorMiddleware(true, true, true);
+$app->add(new SecurityHeaderMiddleware());
+
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+//redirect to 404 page if route not found**
+$errorMiddleware->setErrorHandler(
+    \Slim\Exception\HttpNotFoundException::class,
+    function (Request $request, \Throwable $exception, bool $displayErrorDetails) use ($twig, $app): Response {
+        $response = $app->getResponseFactory()->createResponse(404);
+        return $twig->render($response, 'errors/404.twig');
+    }
+);
 
 // ── 7. SEED ROUTE ─────────────────────────────────────────────────────────────
 $app->get('/seed', function (Request $request, Response $response) use ($basePath): Response {

@@ -7,7 +7,7 @@
         <h1>🔐 Verify Your Identity</h1>
         <p class="auth-card__sub">Enter the 6-digit code from your authenticator app.</p>
 
-        <form action="/2fa" method="POST" class="auth-form">
+        <form action="{{ base_path }}/2fa" method="POST" class="auth-form">
             <div class="form-group">
                 <label for="code">Verification Code</label>
                 <input type="text" id="code" name="code"

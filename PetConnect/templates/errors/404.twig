@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetConnect — Page Not Found</title>
+    <link rel="stylesheet" href="{{ base_path }}/Assets/styles.css">
+</head>
+<body class="centered-page">
+    <div class="error-card">
+        <div class="error-card__logo">PetConnect</div>
+
+        <img
+            src="{{ base_path }}/Assets/images/PetConnect-404-Error-Dog.png"
+            alt="404 dog"
+            class="error-card__img"
+        >
+
+        <span class="error-card__status">Page Not Found</span>
+
+        <hr class="error-card__divider">
+
+        <h1>Oops! We couldn't fetch that page.</h1>
+        <p>The page you're looking for doesn't exist or may have been moved. Let's get you back to finding your new best friend.</p>
+
+        <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg" style="margin-top: 1.5rem;">Browse Pets</a>
+    </div>
+</body>
+</html>

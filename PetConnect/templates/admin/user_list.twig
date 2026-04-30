@@ -6,10 +6,10 @@
     <aside class="admin-sidebar">
         <h2>Admin Panel</h2>
         <nav>
-            <a href="/admin">📊 Dashboard</a>
-            <a href="/admin/pets">🐾 Manage Pets</a>
-            <a href="/admin/users">👥 Users</a>
-            <a href="/admin/adoptions">📋 Adoptions</a>
+            <a href="{{ base_path }}/admin">📊 Dashboard</a>
+            <a href="{{ base_path }}/admin/pets">🐾 Manage Pets</a>
+            <a href="{{ base_path }}/admin/users">👥 Users</a>
+            <a href="{{ base_path }}/admin/adoptions">📋 Adoptions</a>
         </nav>
     </aside>
 
@@ -27,7 +27,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.created_at|date('M d, Y') }}</td>
                     <td>
-                        <form action="/admin/users/{{ user.id }}" method="POST"
+                        <form action="{{ base_path }}/admin/users/{{ user.id }}" method="POST"
                               onsubmit="return confirm('Delete this user?')">
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn--sm btn--danger">Delete</button>

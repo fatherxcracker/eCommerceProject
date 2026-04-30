@@ -35,11 +35,11 @@
             </div>
         {% else %}
             <div class="status-notice status-notice--error">
-                Unfortunately your request was not approved this time. <a href="/pets">Browse other pets</a>.
+                Unfortunately your request was not approved this time. <a href="{{ base_path }}/pets">Browse other pets</a>.
             </div>
         {% endif %}
     </div>
 
-    <a href="/adoptions" class="btn btn--secondary">← All My Requests</a>
+    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">← All My Requests</a>
 </div>
 {% endblock %}

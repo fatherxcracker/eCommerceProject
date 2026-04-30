@@ -5,12 +5,12 @@
 <p>{{ pets|length }} pet(s) found.</p>
 
 {% if pets is empty %}
-    <p>No pets matched your search. <a href="/pets">Browse all pets</a>.</p>
+    <p>No pets matched your search. <a href="{{ base_path }}/pets">Browse all pets</a>.</p>
 {% else %}
     <div class="pet-grid">
         {% for pet in pets %}
             <article class="pet-card">
-                <a href="/pets/{{ pet.id }}">
+                <a href="{{ base_path }}/pets/{{ pet.id }}">
                     <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}">
                     <div class="pet-card__body">
                         <h2>{{ pet.name }}</h2>

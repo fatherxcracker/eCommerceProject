@@ -5,7 +5,7 @@
 <div class="form-page">
     <h1>My Profile</h1>
 
-    <form action="/profile" method="POST" class="form-card">
+    <form action="{{ base_path }}/profile" method="POST" class="form-card">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="{{ user.name }}" required>
@@ -20,7 +20,7 @@
         </div>
         <div class="form-actions">
             <button type="submit" class="btn btn--primary">Save Changes</button>
-            <a href="/adoptions" class="btn btn--secondary">My Adoptions</a>
+            <a href="{{ base_path }}/adoptions" class="btn btn--secondary">My Adoptions</a>
         </div>
     </form>
 </div>

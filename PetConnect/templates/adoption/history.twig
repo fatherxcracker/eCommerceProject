@@ -8,7 +8,7 @@
 <section>
     <h2>Pending & Recent Requests</h2>
     {% if requests is empty %}
-        <p>No adoption requests yet. <a href="/pets">Browse pets</a>.</p>
+        <p>No adoption requests yet. <a href="{{ base_path }}/pets">Browse pets</a>.</p>
     {% else %}
         <table class="data-table">
             <thead>
@@ -20,7 +20,7 @@
                     <td>{{ req.pet.name ?? 'N/A' }}</td>
                     <td>{{ req.submitted_at|date('M d, Y') }}</td>
                     <td><span class="badge badge--{{ req.status }}">{{ req.status|capitalize }}</span></td>
-                    <td><a href="/adoptions/{{ req.id }}">Details</a></td>
+                    <td><a href="{{ base_path }}/adoptions/{{ req.id }}">Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
