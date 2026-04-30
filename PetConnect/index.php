@@ -2,6 +2,9 @@
 
 session_start();
 
+//set maintenance mode to false if we finish maintenance
+define('MAINTENANCE_MODE', true);
+
 use App\Controllers\AdminController;
 use App\Controllers\AdoptionController;
 use App\Controllers\AuthController;
@@ -53,7 +56,7 @@ $app->addRoutingMiddleware();
 $app->add(TwigMiddleware::create($app, $twig));
 $app->add(new FlashMiddleware($twig));
 $app->add(new SecurityMiddleware($app->getResponseFactory(), $basePath));
-$app->add(new MaintenanceMiddleware($app->getResponseFactory(), $basePath));
+$app->add(new MaintenanceMiddleware($app->getResponseFactory(), $twig, $basePath));
 $app->addErrorMiddleware(true, true, true);
 
 // ── 7. SEED ROUTE ─────────────────────────────────────────────────────────────
