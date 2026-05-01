@@ -2,49 +2,72 @@
 {% block title %}My Adoptions{% endblock %}
 
 {% block content %}
-<h1>My Adoptions</h1>
+<div class="adoptions-page">
+    <header class="adoptions-header">
+        <h1>My Adoptions</h1>
+        <p>Track your adoption requests and see the pets you've welcomed home.</p>
+    </header>
 
-{# Active Requests #}
-<section>
-    <h2>Pending & Recent Requests</h2>
-    {% if requests is empty %}
-        <p>No adoption requests yet. <a href="{{ base_path }}/pets">Browse pets</a>.</p>
-    {% else %}
-        <table class="data-table">
-            <thead>
-                <tr><th>Pet</th><th>Submitted</th><th>Status</th><th></th></tr>
-            </thead>
-            <tbody>
-                {% for req in requests %}
-                <tr>
-                    <td>{{ req.pet.name ?? 'N/A' }}</td>
-                    <td>{{ req.submitted_at|date('M d, Y') }}</td>
-                    <td><span class="badge badge--{{ req.status }}">{{ req.status|capitalize }}</span></td>
-                    <td><a href="{{ base_path }}/adoptions/{{ req.id }}">Details</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-</section>
-
-{# Completed Adoptions #}
-<section>
-    <h2>Adopted Pets 🏠</h2>
-    {% if history is empty %}
-        <p>No completed adoptions yet.</p>
-    {% else %}
-        <div class="pet-grid">
-            {% for record in history %}
-                <article class="pet-card pet-card--adopted">
-                    <img src="{{ record.pet.image ?? '/img/default-pet.jpg' }}" alt="{{ record.pet.name }}">
-                    <div class="pet-card__body">
-                        <h3>{{ record.pet.name }}</h3>
-                        <p>Adopted {{ record.completed_at|date('M d, Y') }}</p>
-                    </div>
-                </article>
-            {% endfor %}
+    {# Active Requests #}
+    <section class="adoptions-section">
+        <div class="adoptions-section__head">
+            <h2>Pending &amp; Recent Requests</h2>
+            <span class="adoptions-section__count">{{ requests|length }} request{% if requests|length != 1 %}s{% endif %}</span>
         </div>
-    {% endif %}
-</section>
+
+        {% if requests is empty %}
+            <div class="adoptions-empty">
+                <div class="adoptions-empty__icon">📭</div>
+                <p>No adoption requests yet.</p>
+                <a href="{{ base_path }}/pets" class="btn btn--primary">Browse Pets</a>
+            </div>
+        {% else %}
+            <div class="adoptions-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Pet</th><th>Submitted</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        {% for req in requests %}
+                        <tr>
+                            <td><strong>{{ req.pet.name ?? 'N/A' }}</strong></td>
+                            <td>{{ req.submitted_at|date('M d, Y') }}</td>
+                            <td><span class="badge badge--{{ req.status }}">{{ req.status|capitalize }}</span></td>
+                            <td><a href="{{ base_path }}/adoptions/{{ req.id }}" class="btn btn--secondary btn--sm">Details</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </section>
+
+    {# Completed Adoptions #}
+    <section class="adoptions-section">
+        <div class="adoptions-section__head">
+            <h2>Adopted Pets <span aria-hidden="true">🏠</span></h2>
+            <span class="adoptions-section__count">{{ history|length }} adoption{% if history|length != 1 %}s{% endif %}</span>
+        </div>
+
+        {% if history is empty %}
+            <div class="adoptions-empty">
+                <div class="adoptions-empty__icon">🐾</div>
+                <p>No completed adoptions yet — your future best friend is out there.</p>
+            </div>
+        {% else %}
+            <div class="pet-grid pet-grid--centered">
+                {% for record in history %}
+                    <article class="pet-card pet-card--adopted">
+                        <img src="{{ record.pet.image ? base_path ~ record.pet.image : base_path ~ '/Assets/img/default-pet.jpg' }}" alt="{{ record.pet.name }}" class="pet-card__img">
+                        <div class="pet-card__body">
+                            <span class="badge badge--adopted">Adopted</span>
+                            <h3 class="pet-card__name">{{ record.pet.name }}</h3>
+                            <p class="pet-card__meta">Welcomed home {{ record.completed_at|date('M d, Y') }}</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+</div>
 {% endblock %}

@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetConnect — Page Not Found</title>
     <link rel="stylesheet" href="{{ base_path }}/Assets/styles.css">
+    <script>
+        (function() {
+            const prefs = JSON.parse(localStorage.getItem('petconnect_prefs') || '{}');
+            const theme = prefs.theme || 'system';
+            const resolved = theme === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : theme;
+            document.documentElement.setAttribute('data-theme', resolved);
+        })();
+    </script>
 </head>
 <body class="centered-page">
     <div class="error-card">

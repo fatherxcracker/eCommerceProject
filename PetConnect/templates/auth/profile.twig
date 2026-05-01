@@ -1,27 +1,357 @@
 {% extends 'base.twig' %}
-{% block title %}My Profile{% endblock %}
+{% block title %}Profile Settings{% endblock %}
 
 {% block content %}
-<div class="form-page">
-    <h1>My Profile</h1>
+<div class="settings-page">
+    <header class="settings-header">
+        {% if user.avatar %}
+            <img src="{{ base_path }}{{ user.avatar }}" alt="{{ user.name }}" class="settings-header__avatar settings-header__avatar--img">
+        {% else %}
+            <div class="settings-header__avatar">{{ user.name|first|upper }}</div>
+        {% endif %}
+        <div class="settings-header__text">
+            <h1 class="settings-header__name">{{ user.name }}</h1>
+            <p class="settings-header__sub">{{ user.email }}</p>
+        </div>
+    </header>
 
-    <form action="{{ base_path }}/profile" method="POST" class="form-card">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="{{ user.name }}" required>
+    <div class="settings-layout">
+        <aside class="settings-nav">
+            <a href="#profile" class="settings-nav__link is-active" data-tab="profile">👤 Profile</a>
+            <a href="#security" class="settings-nav__link" data-tab="security">🔒 Security</a>
+            <a href="#preferences" class="settings-nav__link" data-tab="preferences">⚙️ Preferences</a>
+            <a href="#activity" class="settings-nav__link" data-tab="activity">📋 Activity</a>
+            <a href="#danger" class="settings-nav__link settings-nav__link--danger" data-tab="danger">⚠️ Danger Zone</a>
+        </aside>
+
+        <div class="settings-main">
+            {# ── PROFILE TAB ── #}
+            <section id="profile" class="settings-section is-active">
+                <div class="settings-section__header">
+                    <h2>Profile Information</h2>
+                    <p>Update your personal information visible to others.</p>
+                </div>
+                <form action="{{ base_path }}/profile" method="POST" enctype="multipart/form-data" class="settings-form">
+                    <div class="avatar-uploader">
+                        <div class="avatar-uploader__preview" id="avatar-preview">
+                            {% if user.avatar %}
+                                <img src="{{ base_path }}{{ user.avatar }}" alt="Profile picture">
+                            {% else %}
+                                <span class="avatar-uploader__initial">{{ user.name|first|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="avatar-uploader__controls">
+                            <label for="avatar-input" class="btn btn--secondary btn--sm">📷 Change Photo</label>
+                            <input type="file" id="avatar-input" name="avatar" accept="image/*" hidden>
+                            {% if user.avatar %}
+                                <label class="avatar-uploader__remove">
+                                    <input type="checkbox" name="remove_avatar" value="1">
+                                    Remove current photo
+                                </label>
+                            {% endif %}
+                            <small class="form-hint">JPG, PNG, GIF, or WEBP. Max 5 MB.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Display Name</label>
+                        <input type="text" id="name" name="name" value="{{ user.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" value="{{ user.email }}" disabled>
+                        <small class="form-hint">Email cannot be changed. Contact support if needed.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Save Changes</button>
+                    </div>
+                </form>
+            </section>
+
+            {# ── SECURITY TAB ── #}
+            <section id="security" class="settings-section">
+                <div class="settings-section__header">
+                    <h2>Security</h2>
+                    <p>Manage your password and account security.</p>
+                </div>
+                <form action="{{ base_path }}/profile" method="POST" class="settings-form">
+                    <div class="form-group">
+                        <label for="password">New Password</label>
+                        <input type="password" id="password" name="password" minlength="8" placeholder="At least 8 characters">
+                        <small class="form-hint">Leave blank to keep your current password.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirm">Confirm New Password</label>
+                        <input type="password" id="password_confirm" minlength="8" placeholder="Repeat your new password">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Update Password</button>
+                    </div>
+                </form>
+            </section>
+
+            {# ── PREFERENCES TAB ── #}
+            <section id="preferences" class="settings-section">
+                <div class="settings-section__header">
+                    <h2>Preferences</h2>
+                    <p>Customize how PetConnect looks and behaves for you.</p>
+                </div>
+
+                <div class="pref-group">
+                    <h3 class="pref-group__title">Appearance</h3>
+                    <p class="pref-group__hint">Choose how PetConnect looks to you.</p>
+                    <div class="theme-picker" data-pref="theme">
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="light">
+                            <span class="theme-option__card">
+                                <span class="theme-option__preview theme-option__preview--light"></span>
+                                <span class="theme-option__label">☀️ Light</span>
+                            </span>
+                        </label>
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="dark">
+                            <span class="theme-option__card">
+                                <span class="theme-option__preview theme-option__preview--dark"></span>
+                                <span class="theme-option__label">🌙 Dark</span>
+                            </span>
+                        </label>
+                        <label class="theme-option">
+                            <input type="radio" name="theme" value="system">
+                            <span class="theme-option__card">
+                                <span class="theme-option__preview theme-option__preview--system"></span>
+                                <span class="theme-option__label">💻 System</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pref-group">
+                    <h3 class="pref-group__title">Language</h3>
+                    <p class="pref-group__hint">Choose your preferred language.</p>
+                    <select class="pref-select" data-pref="language">
+                        <option value="en">🇨🇦 English</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="es">🇪🇸 Español</option>
+                    </select>
+                </div>
+
+                <div class="pref-group">
+                    <h3 class="pref-group__title">Notifications</h3>
+                    <p class="pref-group__hint">Decide what you want to hear about.</p>
+                    <label class="pref-toggle">
+                        <input type="checkbox" data-pref="notify_adoption">
+                        <span class="pref-toggle__slider"></span>
+                        <span class="pref-toggle__text">
+                            <strong>Adoption updates</strong>
+                            <small>Email me when my adoption requests change status.</small>
+                        </span>
+                    </label>
+                    <label class="pref-toggle">
+                        <input type="checkbox" data-pref="notify_newpets">
+                        <span class="pref-toggle__slider"></span>
+                        <span class="pref-toggle__text">
+                            <strong>New pets in your area</strong>
+                            <small>Get notified when pets matching your interests are added.</small>
+                        </span>
+                    </label>
+                    <label class="pref-toggle">
+                        <input type="checkbox" data-pref="notify_newsletter">
+                        <span class="pref-toggle__slider"></span>
+                        <span class="pref-toggle__text">
+                            <strong>Newsletter</strong>
+                            <small>Monthly stories from PetConnect families.</small>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="pref-group">
+                    <h3 class="pref-group__title">Display</h3>
+                    <p class="pref-group__hint">Adjust pet card density.</p>
+                    <select class="pref-select" data-pref="density">
+                        <option value="comfortable">Comfortable</option>
+                        <option value="compact">Compact</option>
+                    </select>
+                </div>
+
+                <p class="pref-saved-notice"><span id="pref-status">Preferences are saved automatically.</span></p>
+            </section>
+
+            {# ── ACTIVITY TAB ── #}
+            <section id="activity" class="settings-section">
+                <div class="settings-section__header">
+                    <h2>Your Activity</h2>
+                    <p>A quick overview of your adoption journey.</p>
+                </div>
+                <div class="settings-stats">
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.total ?? 0 }}</span><span class="stat-pill__label">Total Requests</span></div>
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.approved ?? 0 }}</span><span class="stat-pill__label">Approved</span></div>
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.pending ?? 0 }}</span><span class="stat-pill__label">Pending</span></div>
+                </div>
+                <div class="form-actions">
+                    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">View All Adoptions</a>
+                </div>
+            </section>
+
+            {# ── DANGER ZONE TAB ── #}
+            <section id="danger" class="settings-section">
+                <div class="settings-section__header">
+                    <h2>Danger Zone</h2>
+                    <p>Irreversible account actions.</p>
+                </div>
+                <div class="danger-card">
+                    <div>
+                        <strong>Sign out of all devices</strong>
+                        <p>End your session here and clear local data.</p>
+                    </div>
+                    <form method="POST" action="{{ base_path }}/logout" style="margin:0">
+                        <button type="submit" class="btn btn--secondary">Logout</button>
+                    </form>
+                </div>
+
+                <div class="danger-card danger-card--severe">
+                    <div>
+                        <strong>Delete account</strong>
+                        <p>Permanently remove your account and all associated data. This cannot be undone.</p>
+                    </div>
+                    <button type="button" class="btn btn--danger" id="open-delete-modal">Delete Account</button>
+                </div>
+            </section>
         </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" value="{{ user.email }}" disabled>
-        </div>
-        <div class="form-group">
-            <label for="password">New Password <small>(leave blank to keep current)</small></label>
-            <input type="password" id="password" name="password" minlength="8">
-        </div>
-        <div class="form-actions">
-            <button type="submit" class="btn btn--primary">Save Changes</button>
-            <a href="{{ base_path }}/adoptions" class="btn btn--secondary">My Adoptions</a>
-        </div>
-    </form>
+    </div>
 </div>
+
+<div class="modal-overlay" id="delete-modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+        <div class="modal-card__icon">⚠️</div>
+        <h2 id="delete-modal-title">Delete your account?</h2>
+        <p class="modal-card__body">
+            This will <strong>permanently</strong> delete your profile, adoption requests, and history. This action <strong>cannot be undone</strong>.
+        </p>
+        <div class="modal-card__field">
+            <label for="delete-confirm-input">Type <code>DELETE</code> to confirm:</label>
+            <input type="text" id="delete-confirm-input" autocomplete="off" placeholder="DELETE">
+            <small class="modal-card__error" id="delete-error" hidden>Confirmation text doesn't match.</small>
+        </div>
+        <div class="modal-card__actions">
+            <button type="button" class="btn btn--secondary" id="cancel-delete">Cancel</button>
+            <form method="POST" action="{{ base_path }}/profile/delete" style="margin:0" id="delete-form">
+                <button type="submit" class="btn btn--danger" id="confirm-delete" disabled>Delete Forever</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Delete account modal
+    (function deleteModal() {
+        const openBtn   = document.getElementById('open-delete-modal');
+        const modal     = document.getElementById('delete-modal');
+        const cancelBtn = document.getElementById('cancel-delete');
+        const input     = document.getElementById('delete-confirm-input');
+        const confirm   = document.getElementById('confirm-delete');
+        const error     = document.getElementById('delete-error');
+        const form      = document.getElementById('delete-form');
+        if (!openBtn) return;
+
+        const open = () => {
+            modal.hidden = false;
+            input.value = '';
+            error.hidden = true;
+            confirm.disabled = true;
+            setTimeout(() => input.focus(), 50);
+        };
+        const close = () => { modal.hidden = true; };
+
+        openBtn.addEventListener('click', open);
+        cancelBtn.addEventListener('click', close);
+        modal.addEventListener('click', e => { if (e.target === modal) close(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
+
+        input.addEventListener('input', () => {
+            const ok = input.value === 'DELETE';
+            confirm.disabled = !ok;
+            error.hidden = ok || input.value === '';
+        });
+        form.addEventListener('submit', e => {
+            if (input.value !== 'DELETE') { e.preventDefault(); error.hidden = false; }
+        });
+    })();
+
+    // Avatar live preview
+    (function avatarPreview() {
+        const input = document.getElementById('avatar-input');
+        const preview = document.getElementById('avatar-preview');
+        if (!input || !preview) return;
+        input.addEventListener('change', () => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            };
+            reader.readAsDataURL(file);
+        });
+    })();
+
+    // Tab switching
+    document.querySelectorAll('.settings-nav__link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = link.dataset.tab;
+            document.querySelectorAll('.settings-nav__link').forEach(l => l.classList.remove('is-active'));
+            document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('is-active'));
+            link.classList.add('is-active');
+            document.getElementById(target).classList.add('is-active');
+        });
+    });
+
+    // Preferences: load from localStorage and persist on change
+    (function preferences() {
+        const defaults = {
+            theme: 'system',
+            language: 'en',
+            density: 'comfortable',
+            notify_adoption: true,
+            notify_newpets: false,
+            notify_newsletter: false,
+        };
+        const stored = JSON.parse(localStorage.getItem('petconnect_prefs') || '{}');
+        const prefs = Object.assign({}, defaults, stored);
+        const status = document.getElementById('pref-status');
+
+        // Hydrate UI
+        document.querySelectorAll('[data-pref]').forEach(el => {
+            const key = el.dataset.pref;
+            if (el.tagName === 'SELECT') el.value = prefs[key];
+            else if (el.classList.contains('theme-picker')) {
+                const radio = el.querySelector(`input[value="${prefs.theme}"]`);
+                if (radio) radio.checked = true;
+            } else if (el.type === 'checkbox') el.checked = prefs[key];
+        });
+
+        const save = () => {
+            localStorage.setItem('petconnect_prefs', JSON.stringify(prefs));
+            applyTheme(prefs.theme);
+            if (status) {
+                status.textContent = '✓ Saved';
+                clearTimeout(save._t);
+                save._t = setTimeout(() => status.textContent = 'Preferences are saved automatically.', 1500);
+            }
+        };
+
+        // Wire up changes
+        document.querySelectorAll('[data-pref]').forEach(el => {
+            const key = el.dataset.pref;
+            if (el.tagName === 'SELECT') {
+                el.addEventListener('change', () => { prefs[key] = el.value; save(); });
+            } else if (el.classList.contains('theme-picker')) {
+                el.querySelectorAll('input[type=radio]').forEach(r => {
+                    r.addEventListener('change', () => { prefs.theme = r.value; save(); });
+                });
+            } else if (el.type === 'checkbox') {
+                el.addEventListener('change', () => { prefs[key] = el.checked; save(); });
+            }
+        });
+    })();
+</script>
 {% endblock %}
