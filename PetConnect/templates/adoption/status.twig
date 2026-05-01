@@ -1,45 +1,45 @@
 {% extends 'base.twig' %}
-{% block title %}Adoption Request — {{ request.pet.name }}{% endblock %}
+{% block title %}{{ translations['adoption_status.title']|default('Adoption Request') }} — {{ request.pet.name }}{% endblock %}
 
 {% block content %}
 <div class="status-page">
-    <h1>Adoption Request</h1>
+    <h1>{{ translations['adoption_status.title']|default('Adoption Request') }}</h1>
 
     <div class="status-card">
         <div class="status-card__pet">
             <img src="{{ request.pet.image ?? '/img/default-pet.jpg' }}" alt="{{ request.pet.name }}">
             <div>
                 <h2>{{ request.pet.name }}</h2>
-                <p>{{ request.pet.breed }} · {{ request.pet.age }} yrs</p>
+                <p>{{ request.pet.breed }} · {{ request.pet.age }} {{ translations['pet_detail.years']|default('yrs') }}</p>
             </div>
         </div>
 
         <dl class="status-details">
-            <dt>Status</dt>
-            <dd><span class="badge badge--{{ request.status }} badge--lg">{{ request.status|capitalize }}</span></dd>
-            <dt>Submitted</dt>
+            <dt>{{ translations['adoption.status']|default('Status') }}</dt>
+            <dd><span class="badge badge--{{ request.status }} badge--lg">{{ translations['adoption.' ~ request.status]|default(request.status|capitalize) }}</span></dd>
+            <dt>{{ translations['adoption_history.submitted']|default('Submitted') }}</dt>
             <dd>{{ request.submitted_at|date('F j, Y') }}</dd>
             {% if request.reviewed_at %}
-                <dt>Reviewed</dt>
+                <dt>{{ translations['adoption_status.reviewed']|default('Reviewed') }}</dt>
                 <dd>{{ request.reviewed_at|date('F j, Y') }}</dd>
             {% endif %}
         </dl>
 
         {% if request.status == 'pending' %}
             <div class="status-notice status-notice--info">
-                ⏳ Your request is under review. We'll update you soon!
+                {{ translations['adoption_status.pending_notice']|default('⏳ Your request is under review. We\'ll update you soon!') }}
             </div>
         {% elseif request.status == 'approved' %}
             <div class="status-notice status-notice--success">
-                🎉 Congratulations! Your adoption has been approved. We'll contact you with next steps.
+                {{ translations['adoption_status.approved_notice']|default('🎉 Congratulations! Your adoption has been approved. We\'ll contact you with next steps.') }}
             </div>
         {% else %}
             <div class="status-notice status-notice--error">
-                Unfortunately your request was not approved this time. <a href="{{ base_path }}/pets">Browse other pets</a>.
+                {{ translations['adoption_status.rejected_notice']|default('Unfortunately your request was not approved this time.') }} <a href="{{ base_path }}/pets">{{ translations['adoption_status.browse_other']|default('Browse other pets') }}</a>.
             </div>
         {% endif %}
     </div>
 
-    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">← All My Requests</a>
+    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">{{ translations['adoption_status.all_requests']|default('← All My Requests') }}</a>
 </div>
 {% endblock %}

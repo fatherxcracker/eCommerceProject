@@ -1,28 +1,27 @@
 {% extends "base.twig" %}
 
-{% block title %}Donate - PetConnect{% endblock %}
+{% block title %}{{ translations['donate.title']|default('Donate - PetConnect') }}{% endblock %}
 
 {% block content %}
 
 <section class="donate-breadcrumb">
-    <a href="{{ base_path }}/">Home</a>
+    <a href="{{ base_path }}/">{{ translations['donate.breadcrumb_home']|default('Home') }}</a>
     <span>›</span>
-    <strong>Donate</strong>
+    <strong>{{ translations['donate.breadcrumb_current']|default('Donate') }}</strong>
 </section>
 
 <section class="donate-hero">
     <div class="donate-heart">♡</div>
-    <h1>Support Our Mission</h1>
+    <h1>{{ translations['donate.hero_title']|default('Support Our Mission') }}</h1>
     <p>
-        Your donation helps us rescue, care for, and find loving homes for animals
-        in need. Every contribution makes a difference.
+        {{ translations['donate.hero_subtitle']|default('Your donation helps us rescue, care for, and find loving homes for animals in need. Every contribution makes a difference.') }}
     </p>
 </section>
 
 <section class="donate-page">
 
     <div class="donate-card">
-        <h2>Make a Donation</h2>
+        <h2>{{ translations['donate.make_donation']|default('Make a Donation') }}</h2>
 
         {% if success is defined %}
             <div class="donate-success">
@@ -43,16 +42,16 @@
             <div class="donate-tabs">
                 <label>
                     <input type="radio" name="donation_type" value="one-time" checked>
-                    <span>One-Time</span>
+                    <span>{{ translations['donate.one_time']|default('One-Time') }}</span>
                 </label>
 
                 <label>
                     <input type="radio" name="donation_type" value="monthly">
-                    <span>Monthly</span>
+                    <span>{{ translations['donate.monthly']|default('Monthly') }}</span>
                 </label>
             </div>
 
-            <h3>Select an amount</h3>
+            <h3>{{ translations['donate.select_amount']|default('Select an amount') }}</h3>
 
             <div class="amount-grid">
                 <label>
@@ -83,37 +82,37 @@
 
             <div class="custom-amount">
                 <span>$</span>
-                <input type="number" name="custom_amount" min="5" placeholder="Custom amount (min. $5)">
+                <input type="number" name="custom_amount" min="5" placeholder="{{ translations['donate.custom_amount_placeholder']|default('Custom amount (min. $5)') }}">
             </div>
 
-            <small>Minimum donation: $5</small>
+            <small>{{ translations['donate.min_donation']|default('Minimum donation: $5') }}</small>
 
             <div class="donate-form-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" placeholder="John Doe" value="{{ old.full_name ?? '' }}">
-            </div>
-
-            <div class="donate-form-group">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="your@email.com" value="{{ old.email ?? '' }}">
+                <label>{{ translations['auth.name']|default('Full Name') }}</label>
+                <input type="text" name="full_name" placeholder="{{ translations['donate.name_placeholder']|default('John Doe') }}" value="{{ old.full_name ?? '' }}">
             </div>
 
             <div class="donate-form-group">
-                <label>Card Information</label>
-                <input type="text" name="card_number" placeholder="4242 4242 4242 4242">
+                <label>{{ translations['auth.email']|default('Email') }}</label>
+                <input type="email" name="email" placeholder="{{ translations['donate.email_placeholder']|default('your@email.com') }}" value="{{ old.email ?? '' }}">
+            </div>
+
+            <div class="donate-form-group">
+                <label>{{ translations['donate.card_info']|default('Card Information') }}</label>
+                <input type="text" name="card_number" placeholder="{{ translations['donate.card_placeholder']|default('4242 4242 4242 4242') }}">
             </div>
 
             <div class="donate-row">
-                <input type="text" name="expiry" placeholder="MM/YY">
-                <input type="text" name="cvc" placeholder="CVC">
+                <input type="text" name="expiry" placeholder="{{ translations['donate.expiry_placeholder']|default('MM/YY') }}">
+                <input type="text" name="cvc" placeholder="{{ translations['donate.cvc_placeholder']|default('CVC') }}">
             </div>
 
             <button type="submit" class="donate-button">
-                Donate
+                {{ translations['donate.button']|default('Donate Now') }}
             </button>
 
             <p class="donate-note">
-                Your donation is tax-deductible. You'll receive a receipt via email.
+                {{ translations['donate.note']|default('Your donation is tax-deductible. You\'ll receive a receipt via email.') }}
             </p>
 
         </form>
@@ -122,13 +121,13 @@
     <div class="donate-side">
 
         <div class="impact-card">
-            <h2>Your Impact</h2>
+            <h2>{{ translations['donate.impact_title']|default('Your Impact') }}</h2>
 
             <div class="impact-item">
                 <span>✓</span>
                 <div>
                     <strong>$25</strong>
-                    <p>Provides food for a pet for one week</p>
+                    <p>{{ translations['donate.impact_25_desc']|default('Provides food for a pet for one week') }}</p>
                 </div>
             </div>
 
@@ -136,7 +135,7 @@
                 <span>✓</span>
                 <div>
                     <strong>$50</strong>
-                    <p>Covers vaccinations for one pet</p>
+                    <p>{{ translations['donate.impact_50_desc']|default('Covers vaccinations for one pet') }}</p>
                 </div>
             </div>
 
@@ -144,7 +143,7 @@
                 <span>✓</span>
                 <div>
                     <strong>$100</strong>
-                    <p>Provides medical care for an injured animal</p>
+                    <p>{{ translations['donate.impact_100_desc']|default('Provides medical care for an injured animal') }}</p>
                 </div>
             </div>
 
@@ -152,7 +151,7 @@
                 <span>✓</span>
                 <div>
                     <strong>$250</strong>
-                    <p>Funds a complete adoption process</p>
+                    <p>{{ translations['donate.impact_250_desc']|default('Funds a complete adoption process') }}</p>
                 </div>
             </div>
 
@@ -160,17 +159,17 @@
                 <span>✓</span>
                 <div>
                     <strong>$500</strong>
-                    <p>Supports emergency rescue operations</p>
+                    <p>{{ translations['donate.impact_500_desc']|default('Supports emergency rescue operations') }}</p>
                 </div>
             </div>
         </div>
 
         <div class="help-card">
-            <h2>Other Ways to Help</h2>
-            <p>• Volunteer at our shelter</p>
-            <p>• Foster a pet in need</p>
-            <p>• Donate supplies</p>
-            <p>• Share our mission</p>
+            <h2>{{ translations['donate.other_ways']|default('Other Ways to Help') }}</h2>
+            <p>• {{ translations['donate.volunteer']|default('Volunteer at our shelter') }}</p>
+            <p>• {{ translations['donate.foster']|default('Foster a pet in need') }}</p>
+            <p>• {{ translations['donate.supplies']|default('Donate supplies') }}</p>
+            <p>• {{ translations['donate.share']|default('Share our mission') }}</p>
         </div>
 
     </div>

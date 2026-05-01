@@ -1,16 +1,16 @@
 {% extends 'base.twig' %}
 
-{% block title %}PetConnect — Find Your Forever Friend{% endblock %}
+{% block title %}{{ translations['home.title']|default('PetConnect — Find Your Forever Friend') }}{% endblock %}
 
 {% block content %}
 <section class="hero-home">
     <div class="hero-home__text">
-        <span class="eyebrow">Adopt · Don't Shop</span>
-        <h1>Find Your<br><span class="hero-home__accent">Forever Friend.</span></h1>
-        <p class="hero-home__lead">Thousands of loving pets are waiting for a home. Browse adoptable dogs, cats, birds, and more — and start your journey today.</p>
+        <span class="eyebrow">{{ translations['home.adopt_slogan']|default('Adopt · Don\'t Shop') }}</span>
+        <h1>{{ translations['home.hero_title']|default('Find Your<br><span class="hero-home__accent">Forever Friend.</span>')|raw }}</h1>
+        <p class="hero-home__lead">{{ translations['home.subtitle']|default('Thousands of loving pets are waiting for a home. Browse adoptable dogs, cats, birds, and more — and start your journey today.') }}</p>
         <div class="hero-home__actions">
-            <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">Browse Pets</a>
-            <a href="{{ base_path }}/about" class="btn btn--secondary btn--lg">Learn More</a>
+            <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">{{ translations['nav.browse_pets']|default('Browse Pets') }}</a>
+            <a href="{{ base_path }}/about" class="btn btn--secondary btn--lg">{{ translations['nav.about']|default('Learn More') }}</a>
         </div>
     </div>
     <div class="hero-home__visual">
@@ -20,16 +20,16 @@
 </section>
 
 <section class="stats-row">
-    <div class="stat-pill"><span class="stat-pill__num">{{ stats.available }}</span><span class="stat-pill__label">Available Pets</span></div>
-    <div class="stat-pill"><span class="stat-pill__num">{{ stats.adopted }}</span><span class="stat-pill__label">Happy Adoptions</span></div>
-    <div class="stat-pill"><span class="stat-pill__num">{{ stats.categories }}</span><span class="stat-pill__label">Species</span></div>
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.available }}</span><span class="stat-pill__label">{{ translations['home.stats_available']|default('Available Pets') }}</span></div>
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.adopted }}</span><span class="stat-pill__label">{{ translations['home.stats_adopted']|default('Happy Adoptions') }}</span></div>
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.categories }}</span><span class="stat-pill__label">{{ translations['home.stats_species']|default('Species') }}</span></div>
 </section>
 
 {% if featured %}
 <section class="home-section">
     <div class="home-section__header">
-        <h2>Meet Some Friends</h2>
-        <a href="{{ base_path }}/pets" class="home-section__link">View all pets →</a>
+        <h2>{{ translations['home.featured_pets']|default('Meet Some Friends') }}</h2>
+        <a href="{{ base_path }}/pets" class="home-section__link">{{ translations['home.view_all']|default('View all pets') }} →</a>
     </div>
     <div class="pet-grid">
         {% for pet in featured %}
@@ -50,29 +50,29 @@
 {% endif %}
 
 <section class="home-section">
-    <h2 class="text-center">How It Works</h2>
+    <h2 class="text-center">{{ translations['home.how_it_works']|default('How It Works') }}</h2>
     <div class="steps">
         <div class="step">
             <div class="step__icon">🔎</div>
-            <h3>1. Browse</h3>
-            <p>Explore profiles of pets in your area and filter by breed, age, or size.</p>
+            <h3>1. {{ translations['home.step1_title']|default('Browse') }}</h3>
+            <p>{{ translations['home.step1_desc']|default('Explore profiles of pets in your area and filter by breed, age, or size.') }}</p>
         </div>
         <div class="step">
             <div class="step__icon">💌</div>
-            <h3>2. Apply</h3>
-            <p>Found a match? Send an adoption request directly through the site.</p>
+            <h3>2. {{ translations['home.step2_title']|default('Apply') }}</h3>
+            <p>{{ translations['home.step2_desc']|default('Found a match? Send an adoption request directly through the site.') }}</p>
         </div>
         <div class="step">
             <div class="step__icon">🏠</div>
-            <h3>3. Welcome Home</h3>
-            <p>Get approved, meet your new friend, and welcome them home.</p>
+            <h3>3. {{ translations['home.step3_title']|default('Welcome Home') }}</h3>
+            <p>{{ translations['home.step3_desc']|default('Get approved, meet your new friend, and welcome them home.') }}</p>
         </div>
     </div>
 </section>
 
 <section class="cta-banner">
-    <h2>Ready to change a life?</h2>
-    <p>A pet is waiting for you to choose them.</p>
-    <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">Start Browsing</a>
+    <h2>{{ translations['home.cta_title']|default('Ready to change a life?') }}</h2>
+    <p>{{ translations['home.cta_subtitle']|default('A pet is waiting for you to choose them.') }}</p>
+    <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">{{ translations['home.start_browsing']|default('Start Browsing') }}</a>
 </section>
 {% endblock %}

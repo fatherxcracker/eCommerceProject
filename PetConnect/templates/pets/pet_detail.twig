@@ -9,36 +9,36 @@
     </div>
 
     <div class="pet-detail__info">
-        <span class="badge badge--{{ pet.status }}">{{ pet.status|capitalize }}</span>
+        <span class="badge badge--{{ pet.status }}">{{ translations['adoption.' ~ pet.status]|default(pet.status|capitalize) }}</span>
         <h1>{{ pet.name }}</h1>
 
         <table class="detail-table">
-            <tr><th>Species</th><td>{{ pet.species }}</td></tr>
-            <tr><th>Breed</th><td>{{ pet.breed }}</td></tr>
-            <tr><th>Age</th><td>{{ pet.age }} year{% if pet.age != 1 %}s{% endif %}</td></tr>
-            <tr><th>Size</th><td>{{ pet.size }}</td></tr>
-            <tr><th>Location</th><td>{{ pet.location }}</td></tr>
-            <tr><th>Category</th><td>{{ pet.category.name ?? 'N/A' }}</td></tr>
+            <tr><th>{{ translations['pet_detail.species']|default('Species') }}</th><td>{{ pet.species }}</td></tr>
+            <tr><th>{{ translations['pet_detail.breed']|default('Breed') }}</th><td>{{ pet.breed }}</td></tr>
+            <tr><th>{{ translations['pet_detail.age']|default('Age') }}</th><td>{{ pet.age }} {{ translations['pet_detail.years']|default('years') }}</td></tr>
+            <tr><th>{{ translations['pet_detail.size']|default('Size') }}</th><td>{{ pet.size }}</td></tr>
+            <tr><th>{{ translations['pet_detail.location']|default('Location') }}</th><td>{{ pet.location }}</td></tr>
+            <tr><th>{{ translations['pet_detail.category']|default('Category') }}</th><td>{{ pet.category.name ?? 'N/A' }}</td></tr>
         </table>
 
         <div class="pet-detail__description">
-            <h3>About {{ pet.name }}</h3>
+            <h3>{{ translations['pets.about']|default('About') }} {{ pet.name }}</h3>
             <p>{{ pet.description }}</p>
         </div>
 
         {% if pet.status == 'available' %}
             {% if session.user_id %}
                 <a href="{{ base_path }}/pets/{{ pet.id }}/adopt" class="btn btn--primary btn--lg">
-                    🐾 Adopt {{ pet.name }}
+                    🐾 {{ translations['pets.adopt_me']|default('Adopt') }} {{ pet.name }}
                 </a>
             {% else %}
-                <a href="{{ base_path }}/login" class="btn btn--primary btn--lg">Login to Adopt</a>
+                <a href="{{ base_path }}/login" class="btn btn--primary btn--lg">{{ translations['pets.login_to_adopt']|default('Login to Adopt') }}</a>
             {% endif %}
         {% else %}
-            <button class="btn btn--disabled" disabled>Not Available</button>
+            <button class="btn btn--disabled" disabled>{{ translations['pets.not_available']|default('Not Available') }}</button>
         {% endif %}
 
-        <a href="{{ base_path }}/pets" class="btn btn--secondary">← Back to listings</a>
+        <a href="{{ base_path }}/pets" class="btn btn--secondary">← {{ translations['pets.back_to_listings']|default('Back to listings') }}</a>
     </div>
 </div>
 {% endblock %}

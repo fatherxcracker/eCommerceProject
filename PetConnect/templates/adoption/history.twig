@@ -1,39 +1,39 @@
 {% extends 'base.twig' %}
-{% block title %}My Adoptions{% endblock %}
+{% block title %}{{ translations['adoption_history.title']|default('My Adoptions') }}{% endblock %}
 
 {% block content %}
 <div class="adoptions-page">
     <header class="adoptions-header">
-        <h1>My Adoptions</h1>
-        <p>Track your adoption requests and see the pets you've welcomed home.</p>
+        <h1>{{ translations['adoption_history.title']|default('My Adoptions') }}</h1>
+        <p>{{ translations['adoption_history.subtitle']|default('Track your adoption requests and see the pets you\'ve welcomed home.') }}</p>
     </header>
 
     {# Active Requests #}
     <section class="adoptions-section">
         <div class="adoptions-section__head">
-            <h2>Pending &amp; Recent Requests</h2>
-            <span class="adoptions-section__count">{{ requests|length }} request{% if requests|length != 1 %}s{% endif %}</span>
+            <h2>{{ translations['adoption_history.pending_recent']|default('Pending & Recent Requests') }}</h2>
+            <span class="adoptions-section__count">{{ requests|length }} {{ requests|length == 1 ? translations['adoption_history.request']|default('request') : translations['adoption_history.requests']|default('requests') }}</span>
         </div>
 
         {% if requests is empty %}
             <div class="adoptions-empty">
                 <div class="adoptions-empty__icon">📭</div>
-                <p>No adoption requests yet.</p>
-                <a href="{{ base_path }}/pets" class="btn btn--primary">Browse Pets</a>
+                <p>{{ translations['adoption_history.no_requests']|default('No adoption requests yet.') }}</p>
+                <a href="{{ base_path }}/pets" class="btn btn--primary">{{ translations['adoption_history.browse_pets']|default('Browse Pets') }}</a>
             </div>
         {% else %}
             <div class="adoptions-table-wrap">
                 <table class="data-table">
                     <thead>
-                        <tr><th>Pet</th><th>Submitted</th><th>Status</th><th></th></tr>
+                        <tr><th>{{ translations['adoption_history.pet']|default('Pet') }}</th><th>{{ translations['adoption_history.submitted']|default('Submitted') }}</th><th>{{ translations['adoption.status']|default('Status') }}</th><th></th></tr>
                     </thead>
                     <tbody>
                         {% for req in requests %}
                         <tr>
                             <td><strong>{{ req.pet.name ?? 'N/A' }}</strong></td>
                             <td>{{ req.submitted_at|date('M d, Y') }}</td>
-                            <td><span class="badge badge--{{ req.status }}">{{ req.status|capitalize }}</span></td>
-                            <td><a href="{{ base_path }}/adoptions/{{ req.id }}" class="btn btn--secondary btn--sm">Details</a></td>
+                            <td><span class="badge badge--{{ req.status }}">{{ translations['adoption.' ~ req.status]|default(req.status|capitalize) }}</span></td>
+                            <td><a href="{{ base_path }}/adoptions/{{ req.id }}" class="btn btn--secondary btn--sm">{{ translations['adoption_history.details']|default('Details') }}</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -45,14 +45,14 @@
     {# Completed Adoptions #}
     <section class="adoptions-section">
         <div class="adoptions-section__head">
-            <h2>Adopted Pets <span aria-hidden="true">🏠</span></h2>
-            <span class="adoptions-section__count">{{ history|length }} adoption{% if history|length != 1 %}s{% endif %}</span>
+            <h2>{{ translations['adoption_history.adopted_pets']|default('Adopted Pets') }} <span aria-hidden="true">🏠</span></h2>
+            <span class="adoptions-section__count">{{ history|length }} {{ history|length == 1 ? translations['adoption_history.adoption']|default('adoption') : translations['adoption_history.adoptions']|default('adoptions') }}</span>
         </div>
 
         {% if history is empty %}
             <div class="adoptions-empty">
                 <div class="adoptions-empty__icon">🐾</div>
-                <p>No completed adoptions yet — your future best friend is out there.</p>
+                <p>{{ translations['adoption_history.no_adoptions']|default('No completed adoptions yet — your future best friend is out there.') }}</p>
             </div>
         {% else %}
             <div class="pet-grid pet-grid--centered">
@@ -62,7 +62,7 @@
                         <div class="pet-card__body">
                             <span class="badge badge--adopted">Adopted</span>
                             <h3 class="pet-card__name">{{ record.pet.name }}</h3>
-                            <p class="pet-card__meta">Welcomed home {{ record.completed_at|date('M d, Y') }}</p>
+                            <p class="pet-card__meta">{{ translations['adoption_history.welcomed_home']|default('Welcomed home') }} {{ record.completed_at|date('M d, Y') }}</p>
                         </div>
                     </article>
                 {% endfor %}

@@ -1,109 +1,102 @@
 {% extends "base.twig" %}
 
-{% block title %}About Us - PetConnect{% endblock %}
+{% block title %}{{ translations['about.title']|default('About Us - PetConnect') }}{% endblock %}
 
 {% block content %}
 
 <section class="about-breadcrumb">
-    <a href="{{ base_path }}/">Home</a>
+    <a href="{{ base_path }}/">{{ translations['about.breadcrumb_home']|default('Home') }}</a>
     <span>›</span>
-    <strong>About Us</strong>
+    <strong>{{ translations['about.breadcrumb_current']|default('About Us') }}</strong>
 </section>
 
 <section class="about-hero">
-    <h1>About PetConnect</h1>
+    <h1>{{ translations['about.hero_title']|default('About PetConnect') }}</h1>
     <p>
-        We're dedicated to connecting loving families with pets in need of homes.
-        Our mission is to ensure every pet finds a safe, caring forever home.
+        {{ translations['about.hero_subtitle']|default("We're dedicated to connecting loving families with pets in need of homes. Our mission is to ensure every pet finds a safe, caring forever home.") }}
     </p>
 </section>
 
 <section class="about-two-columns">
     <div>
-        <h2>Our Mission</h2>
+        <h2>{{ translations['about.mission_title']|default('Our Mission') }}</h2>
         <p>
-            PetConnect was founded with a simple but powerful mission:
-            to reduce pet homelessness and connect animals with loving families.
+            {{ translations['about.mission_desc']|default('PetConnect was founded with a simple but powerful mission: to reduce pet homelessness and connect animals with loving families.') }}
         </p>
         <p>
-            Through our adoption process, we make sure pets and adopters are
-            matched carefully, creating lasting bonds and happy homes.
+            {{ translations['about.mission_desc2']|default('Through our adoption process, we make sure pets and adopters are matched carefully, creating lasting bonds and happy homes.') }}
         </p>
     </div>
 
     <div>
-        <h2>Our Story</h2>
+        <h2>{{ translations['about.story_title']|default('Our Story') }}</h2>
         <p>
-            Started by a group of passionate animal lovers, PetConnect has grown
-            from a small local idea into a trusted adoption platform.
+            {{ translations['about.story_desc']|default('Started by a group of passionate animal lovers, PetConnect has grown from a small local idea into a trusted adoption platform.') }}
         </p>
         <p>
-            We work closely with shelters, rescue organizations, and foster families
-            to provide care for animals while they wait for their forever homes.
+            {{ translations['about.story_desc2']|default('We work closely with shelters, rescue organizations, and foster families to provide care for animals while they wait for their forever homes.') }}
         </p>
     </div>
 </section>
 
 <section class="about-values">
-    <h2>Our Core Values</h2>
+    <h2>{{ translations['about.values_title']|default('Our Core Values') }}</h2>
 
     <div class="values-grid">
         <div class="value-card">
             <div class="value-icon">♡</div>
-            <h3>Compassion</h3>
-            <p>We treat every animal with love, care, and respect.</p>
+            <h3>{{ translations['about.compassion_title']|default('Compassion') }}</h3>
+            <p>{{ translations['about.compassion_desc']|default('We treat every animal with love, care, and respect.') }}</p>
         </div>
 
         <div class="value-card">
             <div class="value-icon">☻</div>
-            <h3>Community</h3>
-            <p>We build a network of caring people dedicated to animal welfare.</p>
+            <h3>{{ translations['about.community_title']|default('Community') }}</h3>
+            <p>{{ translations['about.community_desc']|default('We build a network of caring people dedicated to animal welfare.') }}</p>
         </div>
 
         <div class="value-card">
             <div class="value-icon">★</div>
-            <h3>Excellence</h3>
-            <p>We maintain high standards in pet care and adoption services.</p>
+            <h3>{{ translations['about.excellence_title']|default('Excellence') }}</h3>
+            <p>{{ translations['about.excellence_desc']|default('We maintain high standards in pet care and adoption services.') }}</p>
         </div>
 
         <div class="value-card">
             <div class="value-icon">◎</div>
-            <h3>Transparency</h3>
-            <p>We operate with honesty and openness in everything we do.</p>
+            <h3>{{ translations['about.transparency_title']|default('Transparency') }}</h3>
+            <p>{{ translations['about.transparency_desc']|default('We operate with honesty and openness in everything we do.') }}</p>
         </div>
     </div>
 </section>
 
 <section class="about-impact">
-    <h2>Our Impact</h2>
+    <h2>{{ translations['about.impact_title']|default('Our Impact') }}</h2>
 
     <div class="impact-grid">
-        <div>
-            <strong>5,000+</strong>
-            <p>Successful Adoptions</p>
-        </div>
+    <div>
+        <strong>5,000+</strong>
+        <p>{{ translations['about.successful_adoptions']|default('Successful Adoptions') }}</p>
+    </div>
 
-        <div>
-            <strong>150+</strong>
-            <p>Partner Shelters</p>
-        </div>
+    <div>
+        <strong>150+</strong>
+        <p>{{ translations['about.partner_shelters']|default('Partner Shelters') }}</p>
+    </div>
 
-        <div>
-            <strong>98%</strong>
-            <p>Satisfaction Rate</p>
-        </div>
+    <div>
+        <strong>98%</strong>
+        <p>{{ translations['about.satisfaction_rate']|default('Satisfaction Rate') }}</p>
+    </div>
     </div>
 </section>
 
 <section class="about-team">
-    <h2>Meet Our Team</h2>
+    <h2>{{ translations['about.team_title']|default('Meet Our Team') }}</h2>
     <p>
-        Our dedicated team of animal welfare professionals, veterinarians,
-        and volunteers work tirelessly to ensure the best outcomes for every pet.
+        {{ translations['about.team_desc']|default('Our dedicated team of animal welfare professionals, veterinarians, and volunteers work tirelessly to ensure the best outcomes for every pet.') }}
     </p>
     <p>
-        Want to join our mission? We're always looking for passionate volunteers
-        and foster families.
+        {{ translations['about.team_join']|default('Want to join our mission? We\'re always looking for passionate volunteers and foster families.') }}
     </p>
 </section>
 

@@ -359,6 +359,20 @@ body.centered-page main.container{
 }
 
 .navbar__user { display: flex; align-items: center; gap: .5rem; margin-left: .4rem; padding-left: .75rem; border-left: 1px solid var(--border-soft); }
+.navbar__lang { display: flex; align-items: center; }
+.navbar__lang .lang-switcher {
+    padding: .25rem .5rem;
+    font-size: .85rem;
+    font-weight: 600;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    background: var(--color-light);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.navbar__lang .lang-switcher:hover {
+    border-color: var(--color-primary);
+}
 .navbar__links > li > a.navbar__profile { display: inline-flex; flex-direction: row; align-items: center; gap: .55rem; padding: .3rem .55rem; min-width: 0; line-height: 1; }
 .navbar__avatar {
     display: inline-flex;

@@ -1,5 +1,5 @@
 {% extends 'base.twig' %}
-{% block title %}Profile Settings{% endblock %}
+{% block title %}{{ translations['profile.title']|default('Profile Settings') }}{% endblock %}
 
 {% block content %}
 <div class="settings-page">
@@ -17,36 +17,36 @@
 
     <div class="settings-layout">
         <aside class="settings-nav">
-            <a href="#profile" class="settings-nav__link is-active" data-tab="profile">👤 Profile</a>
-            <a href="#security" class="settings-nav__link" data-tab="security">🔒 Security</a>
-            <a href="#preferences" class="settings-nav__link" data-tab="preferences">⚙️ Preferences</a>
-            <a href="#activity" class="settings-nav__link" data-tab="activity">📋 Activity</a>
-            <a href="#danger" class="settings-nav__link settings-nav__link--danger" data-tab="danger">⚠️ Danger Zone</a>
+            <a href="#profile" class="settings-nav__link is-active" data-tab="profile">👤 {{ translations['profile.profile_info']|default('Profile') }}</a>
+            <a href="#security" class="settings-nav__link" data-tab="security">🔒 {{ translations['profile.security']|default('Security') }}</a>
+            <a href="#preferences" class="settings-nav__link" data-tab="preferences">⚙️ {{ translations['profile.preferences']|default('Preferences') }}</a>
+            <a href="#activity" class="settings-nav__link" data-tab="activity">📋 {{ translations['profile.activity']|default('Activity') }}</a>
+            <a href="#danger" class="settings-nav__link settings-nav__link--danger" data-tab="danger">⚠️ {{ translations['profile.danger_zone']|default('Danger Zone') }}</a>
         </aside>
 
         <div class="settings-main">
             {# ── PROFILE TAB ── #}
             <section id="profile" class="settings-section is-active">
                 <div class="settings-section__header">
-                    <h2>Profile Information</h2>
-                    <p>Update your personal information visible to others.</p>
+                    <h2>{{ translations['profile.profile_info']|default('Profile Information') }}</h2>
+                    <p>{{ translations['profile.update_personal']|default('Update your personal information visible to others.') }}</p>
                 </div>
                 <form action="{{ base_path }}/profile" method="POST" enctype="multipart/form-data" class="settings-form">
                     <div class="avatar-uploader">
                         <div class="avatar-uploader__preview" id="avatar-preview">
                             {% if user.avatar %}
-                                <img src="{{ base_path }}{{ user.avatar }}" alt="Profile picture">
+                                <img src="{{ base_path }}{{ user.avatar }}" alt="{{ translations['auth.display_name']|default('Profile picture') }}">
                             {% else %}
                                 <span class="avatar-uploader__initial">{{ user.name|first|upper }}</span>
                             {% endif %}
                         </div>
                         <div class="avatar-uploader__controls">
-                            <label for="avatar-input" class="btn btn--secondary btn--sm">📷 Change Photo</label>
+                            <label for="avatar-input" class="btn btn--secondary btn--sm">📷 {{ translations['auth.change_photo']|default('Change Photo') }}</label>
                             <input type="file" id="avatar-input" name="avatar" accept="image/*" hidden>
                             {% if user.avatar %}
                                 <label class="avatar-uploader__remove">
                                     <input type="checkbox" name="remove_avatar" value="1">
-                                    Remove current photo
+                                    {{ translations['auth.remove_photo']|default('Remove current photo') }}
                                 </label>
                             {% endif %}
                             <small class="form-hint">JPG, PNG, GIF, or WEBP. Max 5 MB.</small>
@@ -54,16 +54,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Display Name</label>
+                        <label for="name">{{ translations['auth.display_name']|default('Display Name') }}</label>
                         <input type="text" id="name" name="name" value="{{ user.name }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email Address</label>
+                        <label for="email">{{ translations['auth.email']|default('Email Address') }}</label>
                         <input type="email" id="email" value="{{ user.email }}" disabled>
-                        <small class="form-hint">Email cannot be changed. Contact support if needed.</small>
+                        <small class="form-hint">{{ translations['auth.email_cannot_change']|default('Email cannot be changed. Contact support if needed.') }}</small>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn--primary">Save Changes</button>
+                        <button type="submit" class="btn btn--primary">{{ translations['auth.save_changes']|default('Save Changes') }}</button>
                     </div>
                 </form>
             </section>
@@ -71,21 +71,21 @@
             {# ── SECURITY TAB ── #}
             <section id="security" class="settings-section">
                 <div class="settings-section__header">
-                    <h2>Security</h2>
-                    <p>Manage your password and account security.</p>
+                    <h2>{{ translations['profile.security']|default('Security') }}</h2>
+                    <p>{{ translations['profile.manage_password']|default('Manage your password and account security.') }}</p>
                 </div>
                 <form action="{{ base_path }}/profile" method="POST" class="settings-form">
                     <div class="form-group">
-                        <label for="password">New Password</label>
-                        <input type="password" id="password" name="password" minlength="8" placeholder="At least 8 characters">
+                        <label for="password">{{ translations['auth.new_password']|default('New Password') }}</label>
+                        <input type="password" id="password" name="password" minlength="8" placeholder="{{ translations['auth.at_least_8']|default('At least 8 characters') }}">
                         <small class="form-hint">Leave blank to keep your current password.</small>
                     </div>
                     <div class="form-group">
-                        <label for="password_confirm">Confirm New Password</label>
-                        <input type="password" id="password_confirm" minlength="8" placeholder="Repeat your new password">
+                        <label for="password_confirm">{{ translations['auth.confirm_password']|default('Confirm New Password') }}</label>
+                        <input type="password" id="password_confirm" minlength="8" placeholder="{{ translations['profile.repeat_password']|default('Repeat your new password') }}">
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn--primary">Update Password</button>
+                        <button type="submit" class="btn btn--primary">{{ translations['profile.update_password']|default('Update Password') }}</button>
                     </div>
                 </form>
             </section>
@@ -93,127 +93,127 @@
             {# ── PREFERENCES TAB ── #}
             <section id="preferences" class="settings-section">
                 <div class="settings-section__header">
-                    <h2>Preferences</h2>
-                    <p>Customize how PetConnect looks and behaves for you.</p>
+                    <h2>{{ translations['profile.preferences']|default('Preferences') }}</h2>
+                    <p>{{ translations['profile.prefs_desc']|default('Customize how PetConnect looks and behaves for you.') }}</p>
                 </div>
 
                 <div class="pref-group">
-                    <h3 class="pref-group__title">Appearance</h3>
-                    <p class="pref-group__hint">Choose how PetConnect looks to you.</p>
+                    <h3 class="pref-group__title">{{ translations['profile.appearance']|default('Appearance') }}</h3>
+                    <p class="pref-group__hint">{{ translations['profile.appearance_hint']|default('Choose how PetConnect looks to you.') }}</p>
                     <div class="theme-picker" data-pref="theme">
                         <label class="theme-option">
                             <input type="radio" name="theme" value="light">
                             <span class="theme-option__card">
                                 <span class="theme-option__preview theme-option__preview--light"></span>
-                                <span class="theme-option__label">☀️ Light</span>
+                                <span class="theme-option__label">☀️ {{ translations['profile.light']|default('Light') }}</span>
                             </span>
                         </label>
                         <label class="theme-option">
                             <input type="radio" name="theme" value="dark">
                             <span class="theme-option__card">
                                 <span class="theme-option__preview theme-option__preview--dark"></span>
-                                <span class="theme-option__label">🌙 Dark</span>
+                                <span class="theme-option__label">🌙 {{ translations['profile.dark']|default('Dark') }}</span>
                             </span>
                         </label>
                         <label class="theme-option">
                             <input type="radio" name="theme" value="system">
                             <span class="theme-option__card">
                                 <span class="theme-option__preview theme-option__preview--system"></span>
-                                <span class="theme-option__label">💻 System</span>
+                                <span class="theme-option__label">💻 {{ translations['profile.system']|default('System') }}</span>
                             </span>
                         </label>
                     </div>
                 </div>
 
                 <div class="pref-group">
-                    <h3 class="pref-group__title">Language</h3>
-                    <p class="pref-group__hint">Choose your preferred language.</p>
+                    <h3 class="pref-group__title">{{ translations['lang.switch']|default('Language') }}</h3>
+                    <p class="pref-group__hint">{{ translations['profile.language_hint']|default('Choose your preferred language.') }}</p>
                     <select class="pref-select" data-pref="language">
-                        <option value="en">🇨🇦 English</option>
-                        <option value="fr">🇫🇷 Français</option>
+                        <option value="en">🇨🇦 {{ translations['lang.en']|default('English') }}</option>
+                        <option value="fr">🇫🇷 {{ translations['lang.fr']|default('Français') }}</option>
                         <option value="es">🇪🇸 Español</option>
                     </select>
                 </div>
 
                 <div class="pref-group">
-                    <h3 class="pref-group__title">Notifications</h3>
-                    <p class="pref-group__hint">Decide what you want to hear about.</p>
+                    <h3 class="pref-group__title">{{ translations['profile.notifications']|default('Notifications') }}</h3>
+                    <p class="pref-group__hint">{{ translations['profile.notifications_hint']|default('Decide what you want to hear about.') }}</p>
                     <label class="pref-toggle">
                         <input type="checkbox" data-pref="notify_adoption">
                         <span class="pref-toggle__slider"></span>
                         <span class="pref-toggle__text">
-                            <strong>Adoption updates</strong>
-                            <small>Email me when my adoption requests change status.</small>
+                            <strong>{{ translations['profile.adoption_updates']|default('Adoption updates') }}</strong>
+                            <small>{{ translations['profile.adoption_updates_hint']|default('Email me when my adoption requests change status.') }}</small>
                         </span>
                     </label>
                     <label class="pref-toggle">
                         <input type="checkbox" data-pref="notify_newpets">
                         <span class="pref-toggle__slider"></span>
                         <span class="pref-toggle__text">
-                            <strong>New pets in your area</strong>
-                            <small>Get notified when pets matching your interests are added.</small>
+                            <strong>{{ translations['profile.new_pets']|default('New pets in your area') }}</strong>
+                            <small>{{ translations['profile.new_pets_hint']|default('Get notified when pets matching your interests are added.') }}</small>
                         </span>
                     </label>
                     <label class="pref-toggle">
                         <input type="checkbox" data-pref="notify_newsletter">
                         <span class="pref-toggle__slider"></span>
                         <span class="pref-toggle__text">
-                            <strong>Newsletter</strong>
-                            <small>Monthly stories from PetConnect families.</small>
+                            <strong>{{ translations['profile.newsletter']|default('Newsletter') }}</strong>
+                            <small>{{ translations['profile.newsletter_hint']|default('Monthly stories from PetConnect families.') }}</small>
                         </span>
                     </label>
                 </div>
 
                 <div class="pref-group">
-                    <h3 class="pref-group__title">Display</h3>
-                    <p class="pref-group__hint">Adjust pet card density.</p>
+                    <h3 class="pref-group__title">{{ translations['profile.display']|default('Display') }}</h3>
+                    <p class="pref-group__hint">{{ translations['profile.display_hint']|default('Adjust pet card density.') }}</p>
                     <select class="pref-select" data-pref="density">
-                        <option value="comfortable">Comfortable</option>
-                        <option value="compact">Compact</option>
+                        <option value="comfortable">{{ translations['profile.comfortable']|default('Comfortable') }}</option>
+                        <option value="compact">{{ translations['profile.compact']|default('Compact') }}</option>
                     </select>
                 </div>
 
-                <p class="pref-saved-notice"><span id="pref-status">Preferences are saved automatically.</span></p>
+                <p class="pref-saved-notice"><span id="pref-status">{{ translations['profile.prefs_saved']|default('Preferences are saved automatically.') }}</span></p>
             </section>
 
             {# ── ACTIVITY TAB ── #}
             <section id="activity" class="settings-section">
                 <div class="settings-section__header">
-                    <h2>Your Activity</h2>
-                    <p>A quick overview of your adoption journey.</p>
+                    <h2>{{ translations['profile.activity']|default('Your Activity') }}</h2>
+                    <p>{{ translations['profile.activity_desc']|default('A quick overview of your adoption journey.') }}</p>
                 </div>
                 <div class="settings-stats">
-                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.total ?? 0 }}</span><span class="stat-pill__label">Total Requests</span></div>
-                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.approved ?? 0 }}</span><span class="stat-pill__label">Approved</span></div>
-                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.pending ?? 0 }}</span><span class="stat-pill__label">Pending</span></div>
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.total ?? 0 }}</span><span class="stat-pill__label">{{ translations['profile.total_requests']|default('Total Requests') }}</span></div>
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.approved ?? 0 }}</span><span class="stat-pill__label">{{ translations['adoption.approved']|default('Approved') }}</span></div>
+                    <div class="stat-pill"><span class="stat-pill__num">{{ stats.pending ?? 0 }}</span><span class="stat-pill__label">{{ translations['adoption.pending']|default('Pending') }}</span></div>
                 </div>
                 <div class="form-actions">
-                    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">View All Adoptions</a>
+                    <a href="{{ base_path }}/adoptions" class="btn btn--secondary">{{ translations['profile.view_adoptions']|default('View All Adoptions') }}</a>
                 </div>
             </section>
 
             {# ── DANGER ZONE TAB ── #}
             <section id="danger" class="settings-section">
                 <div class="settings-section__header">
-                    <h2>Danger Zone</h2>
-                    <p>Irreversible account actions.</p>
+                    <h2>{{ translations['profile.danger_zone']|default('Danger Zone') }}</h2>
+                    <p>{{ translations['profile.danger_desc']|default('Irreversible account actions.') }}</p>
                 </div>
                 <div class="danger-card">
                     <div>
-                        <strong>Sign out of all devices</strong>
-                        <p>End your session here and clear local data.</p>
+                        <strong>{{ translations['profile.logout_all']|default('Sign out of all devices') }}</strong>
+                        <p>{{ translations['profile.logout_all_desc']|default('End your session here and clear local data.') }}</p>
                     </div>
                     <form method="POST" action="{{ base_path }}/logout" style="margin:0">
-                        <button type="submit" class="btn btn--secondary">Logout</button>
+                        <button type="submit" class="btn btn--secondary">{{ translations['nav.logout']|default('Logout') }}</button>
                     </form>
                 </div>
 
                 <div class="danger-card danger-card--severe">
                     <div>
-                        <strong>Delete account</strong>
-                        <p>Permanently remove your account and all associated data. This cannot be undone.</p>
+                        <strong>{{ translations['profile.delete_account']|default('Delete account') }}</strong>
+                        <p>{{ translations['profile.delete_account_desc']|default('Permanently remove your account and all associated data. This cannot be undone.') }}</p>
                     </div>
-                    <button type="button" class="btn btn--danger" id="open-delete-modal">Delete Account</button>
+                    <button type="button" class="btn btn--danger" id="open-delete-modal">{{ translations['profile.delete_account']|default('Delete Account') }}</button>
                 </div>
             </section>
         </div>

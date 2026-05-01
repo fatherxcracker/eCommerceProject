@@ -25,6 +25,10 @@ use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 
+// Load I18n translations
+require __DIR__ . '/src/I18n/I18n.php';
+use App\I18n\I18n;
+
 // ── 1. DATABASE ───────────────────────────────────────────────────────────────
 if (!is_dir(__DIR__ . '/var')) {
     mkdir(__DIR__ . '/var', 0755, true);
@@ -37,6 +41,8 @@ $basePath = rtrim(str_ireplace('index.php', '', $_SERVER['SCRIPT_NAME']), '/');
 // ── 3. TWIG ───────────────────────────────────────────────────────────────────
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
 $twig->getEnvironment()->addGlobal('base_path', $basePath);
+$twig->getEnvironment()->addGlobal('translations', I18n::forTwig());
+$twig->getEnvironment()->addGlobal('current_locale', I18n::getLocale());
 
 // ── 4. DI CONTAINER ───────────────────────────────────────────────────────────
 $container = new Container();
@@ -71,7 +77,20 @@ $errorMiddleware->setErrorHandler(
     }
 );
 
-// ── 7. SEED ROUTE ─────────────────────────────────────────────────────────────
+// ── 7. LANGUAGE SWITCH ROUTE ─────────────────────────────────────────────────
+$app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath): Response {
+    $locale = $args['locale'] ?? 'en';
+    
+    if (I18n::isSupported($locale)) {
+        I18n::setLocale($locale);
+    }
+    
+    // Get the referer page to redirect back
+    $referer = $_SERVER['HTTP_REFERER'] ?? $basePath . '/';
+    return $response->withHeader('Location', $referer)->withStatus(302);
+});
+
+// ── 8. SEED ROUTE ─────────────────────────────────────────────────────────────
 $app->get('/seed', function (Request $request, Response $response) use ($basePath): Response {
     R::wipe('adoptionhistory');
     R::wipe('adoptionrequest');
