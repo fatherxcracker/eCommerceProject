@@ -1,21 +1,21 @@
 {% extends 'base.twig' %}
-{% block title %}Two-Factor Verification{% endblock %}
+{% block title %}{{ translations['auth2fa.title']|default('Two-Factor Verification') }}{% endblock %}
 
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">
-        <h1>🔐 Verify Your Identity</h1>
-        <p class="auth-card__sub">Enter the 6-digit code from your authenticator app.</p>
+        <h1>{{ translations['auth2fa.verify_identity']|default('🔐 Verify Your Identity') }}</h1>
+        <p class="auth-card__sub">{{ translations['auth2fa.subtitle']|default('Enter the 6-digit code from your authenticator app.') }}</p>
 
         <form action="{{ base_path }}/2fa" method="POST" class="auth-form">
             <div class="form-group">
-                <label for="code">Verification Code</label>
+                <label for="code">{{ translations['auth2fa.code']|default('Verification Code') }}</label>
                 <input type="text" id="code" name="code"
                        inputmode="numeric" pattern="[0-9]{6}"
                        maxlength="6" autofocus required
-                       placeholder="000000">
+                       placeholder="{{ translations['auth2fa.code_placeholder']|default('000000') }}">
             </div>
-            <button type="submit" class="btn btn--primary btn--full">Verify</button>
+            <button type="submit" class="btn btn--primary btn--full">{{ translations['auth2fa.verify']|default('Verify') }}</button>
         </form>
     </div>
 </div>

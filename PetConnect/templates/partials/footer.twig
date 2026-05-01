@@ -2,15 +2,17 @@
     <div class="footer__grid">
         <div class="footer__col">
             <div class="footer__brand">PetConnect</div>
-            <p class="footer__tagline">Helping every pet find a forever home.</p>
+            <p class="footer__tagline">{{ translations['footer.about_desc']|default('Helping every pet find a forever home.') }}</p>
         </div>
 
         <div class="footer__col">
-            <h4 class="footer__heading">Explore</h4>
+            <h4 class="footer__heading">{{ translations['footer.quick_links']|default('Explore') }}</h4>
             <ul class="footer__links">
-                <li><a href="{{ base_path }}/pets">Browse Pets</a></li>
-                <li><a href="{{ base_path }}/about">About</a></li>
-                <li><a href="{{ base_path }}/contact">Contact Us</a></li>
+                <li><a href="{{ base_path }}/pets">{{ translations['nav.browse_pets']|default('Browse Pets') }}</a></li>
+                <li><a href="{{ base_path }}/about">{{ translations['nav.about']|default('About') }}</a></li>
+                <li><a href="{{ base_path }}/contact">{{ translations['nav.contact']|default('Contact') }}</a></li>
+                <li><a href="{{ base_path }}/donate">♡ {{ translations['nav.donate']|default('Donate') }}</a></li>
+                <li><a href="{{ base_path }}/faq">{{ translations['nav.faq']|default('FAQ') }}</a></li>
             </ul>
         </div>
 
@@ -18,17 +20,17 @@
             <h4 class="footer__heading">Account</h4>
             <ul class="footer__links">
                 {% if session.user_id is defined and session.user_id %}
-                    <li><a href="{{ base_path }}/profile">My Profile</a></li>
-                    <li><a href="{{ base_path }}/adoptions">My Adoptions</a></li>
+                    <li><a href="{{ base_path }}/profile">{{ translations['nav.profile']|default('My Profile') }}</a></li>
+                    <li><a href="{{ base_path }}/adoptions">{{ translations['nav.my_adoptions']|default('My Adoptions') }}</a></li>
                 {% else %}
-                    <li><a href="{{ base_path }}/login">Login</a></li>
-                    <li><a href="{{ base_path }}/register">Register</a></li>
+                    <li><a href="{{ base_path }}/login">{{ translations['nav.login']|default('Login') }}</a></li>
+                    <li><a href="{{ base_path }}/register">{{ translations['nav.register']|default('Register') }}</a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
 
     <div class="footer__bottom">
-        &copy; {{ "now"|date("Y") }} PetConnect. All rights reserved.
+        &copy; {{ "now"|date("Y") }} PetConnect. {{ translations['footer.copyright']|default('All rights reserved.') }}
     </div>
 </footer>

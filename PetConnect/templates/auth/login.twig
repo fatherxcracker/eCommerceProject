@@ -1,28 +1,28 @@
 {% extends 'base.twig' %}
-{% block title %}Login{% endblock %}
+{% block title %}{{ translations['auth.login']|default('Login') }}{% endblock %}
 
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">
-        <h1>Welcome Back 🐾</h1>
-        <p class="auth-card__sub">Log in to continue your adoption journey.</p>
+        <h1>{{ translations['auth.welcome_back']|default('Welcome Back 🐾') }}</h1>
+        <p class="auth-card__sub">{{ translations['auth.login']|default('Log in to continue your adoption journey.') }}</p>
 
         <form action="{{ base_path }}/login" method="POST" class="auth-form">
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">{{ translations['auth.email']|default('Email') }}</label>
                 <input type="email" id="email" name="email" required autofocus>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ translations['auth.password']|default('Password') }}</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit" class="btn btn--primary btn--full">Login</button>
+            <button type="submit" class="btn btn--primary btn--full">{{ translations['auth.login']|default('Login') }}</button>
         </form>
 
         <div class="auth-card__links">
-            <a href="{{ base_path }}/reset-password">Forgot your password?</a>
+            <a href="{{ base_path }}/reset-password">{{ translations['auth.forgot_password']|default('Forgot your password?') }}</a>
             <span>·</span>
-            <a href="{{ base_path }}/register">Create an account</a>
+            <a href="{{ base_path }}/register">{{ translations['auth.no_account']|default('Create an account') }}</a>
         </div>
     </div>
 </div>

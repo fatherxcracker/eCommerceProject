@@ -1,11 +1,11 @@
 {% extends 'base.twig' %}
-{% block title %}Search: {{ query }}{% endblock %}
+{% block title %}{{ translations['pet_search.title']|default('Search Results') }}: {{ query }}{% endblock %}
 {% block content %}
-<h1>Search Results for "{{ query }}"</h1>
-<p>{{ pets|length }} pet(s) found.</p>
+<h1>{{ translations['pet_search.title']|default('Search Results') }} "{{ query }}"</h1>
+<p>{{ pets|length }} {{ translations['pet_search.found']|default('pet(s) found.') }}</p>
 
 {% if pets is empty %}
-    <p>No pets matched your search. <a href="{{ base_path }}/pets">Browse all pets</a>.</p>
+    <p>{{ translations['pet_search.no_results']|default('No pets matched your search.') }} <a href="{{ base_path }}/pets">{{ translations['pet_search.browse_all']|default('Browse all pets') }}</a>.</p>
 {% else %}
     <div class="pet-grid">
         {% for pet in pets %}
@@ -14,7 +14,7 @@
                     <img src="{{ pet.image ?? '/img/default-pet.jpg' }}" alt="{{ pet.name }}">
                     <div class="pet-card__body">
                         <h2>{{ pet.name }}</h2>
-                        <p>{{ pet.breed }} · {{ pet.age }} yrs</p>
+                        <p>{{ pet.breed }} · {{ pet.age }} {{ translations['pet_detail.years']|default('yrs') }}</p>
                         <span class="badge badge--{{ pet.status }}">{{ pet.status }}</span>
                     </div>
                 </a>

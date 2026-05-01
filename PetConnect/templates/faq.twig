@@ -1,0 +1,112 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ translations['faq.title']|default('FAQ - PetConnect') }}{% endblock %}
+
+{% block content %}
+
+<section class="faq-breadcrumb">
+    <a href="{{ base_path }}/">{{ translations['faq.breadcrumb_home']|default('Home') }}</a>
+    <span>›</span>
+    <strong>{{ translations['faq.breadcrumb_current']|default('FAQ') }}</strong>
+</section>
+
+<section class="faq-hero">
+    <div class="faq-icon">?</div>
+    <h1>{{ translations['faq.hero_title']|default('Frequently Asked Questions') }}</h1>
+    <p>
+        {{ translations['faq.hero_subtitle']|default('Find answers to common questions about our adoption process, fees, and pet care.') }}
+    </p>
+</section>
+
+<section class="faq-page">
+
+    <div class="faq-card">
+        <h2>{{ translations['faq.process_title']|default('Adoption Process') }}</h2>
+
+        <details>
+            <summary>{{ translations['faq.how_adopt']|default('How do I adopt a pet?') }}</summary>
+            <p>{{ translations['faq.how_adopt_answer']|default('Browse available pets, choose the pet you are interested in, and submit an adoption request. Our team will contact you with the next steps.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.requirements']|default('What are the adoption requirements?') }}</summary>
+            <p>{{ translations['faq.requirements_answer']|default('You must provide basic personal information, a safe living environment, and agree to care for the pet responsibly.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.duration']|default('How long does the adoption process take?') }}</summary>
+            <p>{{ translations['faq.duration_answer']|default('The typical adoption process takes 1-2 weeks from application submission to bringing your new pet home. This includes application review, home visit, meet-and-greet, and final paperwork.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.meet_pet']|default('Can I meet the pet before adopting?') }}</summary>
+            <p>{{ translations['faq.meet_pet_answer']|default('Yes. We encourage adopters to meet the pet before completing the adoption.') }}</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>{{ translations['faq.fees_title']|default('Adoption Fees') }}</h2>
+
+        <details>
+            <summary>{{ translations['faq.fees']|default('What are the adoption fees?') }}</summary>
+            <p>{{ translations['faq.fees_answer']|default('Adoption fees depend on the pet, age, and medical needs. Fees help cover care, food, and medical costs.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.included']|default('What\'s included in the adoption fee?') }}</summary>
+            <p>{{ translations['faq.included_answer']|default('The adoption fee covers vaccinations, spaying/neutering, microchipping, initial medical checkup, and deworming. You\'ll also receive the pet\'s medical records and a starter kit.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.payment']|default('Are there payment plans available?') }}</summary>
+            <p>{{ translations['faq.payment_answer']|default('Please contact us directly to discuss available payment options.') }}</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>{{ translations['faq.care_title']|default('Pet Care') }}</h2>
+
+        <details>
+            <summary>{{ translations['faq.supplies']|default('What supplies do I need before bringing my pet home?') }}</summary>
+            <p>{{ translations['faq.supplies_answer']|default('You should prepare food, bowls, a bed, toys, grooming supplies, and a safe space for the pet.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.records']|default('Do all pets come with medical records?') }}</summary>
+            <p>{{ translations['faq.records_answer']|default('Yes. Every adopted pet comes with available medical records and vaccination information.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.questions']|default('What if I have questions after adoption?') }}</summary>
+            <p>{{ translations['faq.questions_answer']|default('We provide post-adoption support. Feel free to contact us with any questions or concerns.') }}</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>{{ translations['faq.support_title']|default('Returns & Support') }}</h2>
+
+        <details>
+            <summary>{{ translations['faq.return_policy']|default('What is your return policy?') }}</summary>
+            <p>{{ translations['faq.return_policy_answer']|default('If the adoption is not working out, contact us immediately. We will help find the safest solution for the pet.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.post_adoption_support']|default('Do you offer post-adoption support?') }}</summary>
+            <p>{{ translations['faq.post_adoption_support_answer']|default('Yes. We provide guidance and support after adoption for pet care, adjustment, and basic questions.') }}</p>
+        </details>
+
+        <details>
+            <summary>{{ translations['faq.foster_before_adopt']|default('Can I foster a pet before adopting?') }}</summary>
+            <p>{{ translations['faq.foster_before_adopt_answer']|default('Yes. Fostering may be available depending on the pet and shelter needs.') }}</p>
+        </details>
+    </div>
+
+</section>
+
+<section class="faq-contact-box">
+    <h2>{{ translations['faq.still_questions']|default('Still have questions?') }}</h2>
+    <p>{{ translations['faq.contact_help']|default('Can\'t find the answer you\'re looking for? Contact us and we\'ll be happy to help!') }}</p>
+    <a href="{{ base_path }}/contact">{{ translations['nav.contact']|default('Contact Us') }} →</a>
+</section>
+
+{% endblock %}

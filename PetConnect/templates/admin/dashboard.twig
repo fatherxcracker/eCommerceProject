@@ -1,57 +1,57 @@
 {% extends 'base.twig' %}
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}{{ translations['admin.dashboard']|default('Admin Dashboard') }}{% endblock %}
 
 {% block content %}
 <div class="admin-layout">
 
     {# Sidebar #}
     <aside class="admin-sidebar">
-        <h2>Admin Panel</h2>
+        <h2>{{ translations['admin.dashboard']|default('Admin Panel') }}</h2>
         <nav>
-            <a href="{{ base_path }}/admin">📊 Dashboard</a>
-            <a href="{{ base_path }}/admin/pets">🐾 Manage Pets</a>
-            <a href="{{ base_path }}/admin/users">👥 Users</a>
-            <a href="{{ base_path }}/admin/adoptions">📋 Adoptions</a>
-            <a href="{{ base_path }}/">← Back to Site</a>
+            <a href="{{ base_path }}/admin">📊 {{ translations['admin.dashboard']|default('Dashboard') }}</a>
+            <a href="{{ base_path }}/admin/pets">🐾 {{ translations['admin.manage_pets']|default('Manage Pets') }}</a>
+            <a href="{{ base_path }}/admin/users">👥 {{ translations['admin.users']|default('Users') }}</a>
+            <a href="{{ base_path }}/admin/adoptions">📋 {{ translations['admin.adoptions']|default('Adoptions') }}</a>
+            <a href="{{ base_path }}/">{{ translations['admin.back_to_site']|default('← Back to Site') }}</a>
         </nav>
     </aside>
 
     {# Main area #}
     <div class="admin-main">
-        <h1>Dashboard Overview</h1>
+        <h1>{{ translations['admin.overview']|default('Dashboard Overview') }}</h1>
 
         {# Stats Cards #}
         <div class="stats-grid">
             <div class="stat-card">
                 <span class="stat-card__number">{{ stats.total_pets }}</span>
-                <span class="stat-card__label">Total Pets</span>
+                <span class="stat-card__label">{{ translations['admin.total_pets']|default('Total Pets') }}</span>
             </div>
             <div class="stat-card stat-card--green">
                 <span class="stat-card__number">{{ stats.available_pets }}</span>
-                <span class="stat-card__label">Available</span>
+                <span class="stat-card__label">{{ translations['admin.available']|default('Available') }}</span>
             </div>
             <div class="stat-card stat-card--blue">
                 <span class="stat-card__number">{{ stats.adopted_pets }}</span>
-                <span class="stat-card__label">Adopted</span>
+                <span class="stat-card__label">{{ translations['admin.adopted']|default('Adopted') }}</span>
             </div>
             <div class="stat-card">
                 <span class="stat-card__number">{{ stats.total_users }}</span>
-                <span class="stat-card__label">Users</span>
+                <span class="stat-card__label">{{ translations['admin.total_users']|default('Users') }}</span>
             </div>
             <div class="stat-card stat-card--orange">
                 <span class="stat-card__number">{{ stats.pending_requests }}</span>
-                <span class="stat-card__label">Pending Requests</span>
+                <span class="stat-card__label">{{ translations['admin.pending']|default('Pending Requests') }}</span>
             </div>
         </div>
 
         {# Pending Requests #}
         <section>
-            <h2>Pending Adoption Requests</h2>
+            <h2>{{ translations['admin.pending_requests']|default('Pending Adoption Requests') }}</h2>
             {% if recent_requests is empty %}
-                <p>No pending requests.</p>
+                <p>{{ translations['admin.no_pending']|default('No pending requests.') }}</p>
             {% else %}
                 <table class="data-table">
-                    <thead><tr><th>Pet</th><th>User</th><th>Submitted</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>{{ translations['adoption_history.pet']|default('Pet') }}</th><th>{{ translations['admin.users']|default('User') }}</th><th>{{ translations['adoption_history.submitted']|default('Submitted') }}</th><th>{{ translations['admin.actions']|default('Actions') }}</th></tr></thead>
                     <tbody>
                         {% for req in recent_requests %}
                         <tr>
@@ -60,17 +60,17 @@
                             <td>{{ req.submitted_at|date('M d, Y') }}</td>
                             <td>
                                 <form action="{{ base_path }}/admin/adoptions/{{ req.id }}/approve" method="POST" style="display:inline">
-                                    <button class="btn btn--sm btn--success">Approve</button>
+                                    <button class="btn btn--sm btn--success">{{ translations['admin.approve_btn']|default('Approve') }}</button>
                                 </form>
                                 <form action="{{ base_path }}/admin/adoptions/{{ req.id }}/reject" method="POST" style="display:inline">
-                                    <button class="btn btn--sm btn--danger">Reject</button>
+                                    <button class="btn btn--sm btn--danger">{{ translations['admin.reject_btn']|default('Reject') }}</button>
                                 </form>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <a href="{{ base_path }}/admin/adoptions">View all requests →</a>
+                <a href="{{ base_path }}/admin/adoptions">{{ translations['admin.view_all']|default('View all requests →') }}</a>
             {% endif %}
         </section>
     </div>

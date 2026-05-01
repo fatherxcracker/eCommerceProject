@@ -1,30 +1,30 @@
 {% extends 'base.twig' %}
-{% block title %}Register{% endblock %}
+{% block title %}{{ translations['auth.register']|default('Register') }}{% endblock %}
 
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">
-        <h1>Join PetConnect 🐾</h1>
-        <p class="auth-card__sub">Create an account to start adopting.</p>
+        <h1>{{ translations['auth.join_petconnect']|default('Join PetConnect 🐾') }}</h1>
+        <p class="auth-card__sub">{{ translations['auth.register']|default('Create an account to start adopting.') }}</p>
 
         <form action="{{ base_path }}/register" method="POST" class="auth-form">
             <div class="form-group">
-                <label for="name">Full Name</label>
+                <label for="name">{{ translations['auth.name']|default('Full Name') }}</label>
                 <input type="text" id="name" name="name" required autofocus>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">{{ translations['auth.email']|default('Email') }}</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ translations['auth.password']|default('Password') }}</label>
                 <input type="password" id="password" name="password" minlength="8" required>
             </div>
-            <button type="submit" class="btn btn--primary btn--full">Create Account</button>
+            <button type="submit" class="btn btn--primary btn--full">{{ translations['auth.register']|default('Create Account') }}</button>
         </form>
 
         <div class="auth-card__links">
-            Already have an account? <a href="{{ base_path }}/login">Login</a>
+            {{ translations['auth.has_account']|default('Already have an account?') }} <a href="{{ base_path }}/login">{{ translations['auth.login']|default('Login') }}</a>
         </div>
     </div>
 </div>

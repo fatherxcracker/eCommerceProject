@@ -1,26 +1,26 @@
 {% extends 'base.twig' %}
-{% block title %}Adopt {{ pet.name }}{% endblock %}
+{% block title %}{{ translations['adoption_apply.title']|default('Adopt') }} {{ pet.name }}{% endblock %}
 
 {% block content %}
 <div class="form-page">
     <div class="adopt-header">
         <img src="{{ pet.image ? base_path ~ pet.image : base_path ~ '/Assets/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="adopt-header__img">
         <div>
-            <h1>Adopt {{ pet.name }}</h1>
-            <p>{{ pet.breed }} · {{ pet.age }} yrs · {{ pet.location }}</p>
+            <h1>{{ translations['adoption_apply.title']|default('Adopt') }} {{ pet.name }}</h1>
+            <p>{{ pet.breed }} · {{ pet.age }} {{ translations['pet_detail.years']|default('yrs') }} · {{ pet.location }}</p>
         </div>
     </div>
 
     <form action="{{ base_path }}/pets/{{ pet.id }}/adopt" method="POST" class="form-card">
         <div class="form-group">
-            <label for="message">Tell us why you'd be a great match for {{ pet.name }}</label>
+            <label for="message">{{ translations['adoption_apply.tell_us']|default('Tell us why you\'d be a great match for') }} {{ pet.name }}</label>
             <textarea id="message" name="message" rows="6"
-                      placeholder="Describe your home, lifestyle, and experience with pets..."
+                      placeholder="{{ translations['adoption_apply.placeholder']|default('Describe your home, lifestyle, and experience with pets...') }}"
                       required></textarea>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn--primary">Submit Adoption Request</button>
-            <a href="{{ base_path }}/pets/{{ pet.id }}" class="btn btn--secondary">Cancel</a>
+            <button type="submit" class="btn btn--primary">{{ translations['adoption_apply.submit']|default('Submit Adoption Request') }}</button>
+            <a href="{{ base_path }}/pets/{{ pet.id }}" class="btn btn--secondary">{{ translations['common.cancel']|default('Cancel') }}</a>
         </div>
     </form>
 </div>

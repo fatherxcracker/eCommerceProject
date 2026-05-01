@@ -36,6 +36,11 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 
+// Load I18n translations
+require __DIR__ . '/src/I18n/I18n.php';
+use App\I18n\I18n;
+
+
 // ── 1. DATABASE ───────────────────────────────────────────────────────────────
 $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4',
     $_ENV['DB_HOST'],
@@ -53,6 +58,8 @@ $basePath = rtrim(str_ireplace('index.php', '', $_SERVER['SCRIPT_NAME']), '/');
 // ── 3. TWIG ───────────────────────────────────────────────────────────────────
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
 $twig->getEnvironment()->addGlobal('base_path', $basePath);
+$twig->getEnvironment()->addGlobal('translations', I18n::forTwig());
+$twig->getEnvironment()->addGlobal('current_locale', I18n::getLocale());
 
 // ── 4. DI CONTAINER ───────────────────────────────────────────────────────────
 $container = new Container();
@@ -88,7 +95,20 @@ $errorMiddleware->setErrorHandler(
     }
 );
 
-// ── 7. SEED ROUTE ─────────────────────────────────────────────────────────────
+// ── 7. LANGUAGE SWITCH ROUTE ─────────────────────────────────────────────────
+$app->get('/lang/{locale}', function (Request $request, Response $response, array $args) use ($basePath): Response {
+    $locale = $args['locale'] ?? 'en';
+    
+    if (I18n::isSupported($locale)) {
+        I18n::setLocale($locale);
+    }
+    
+    // Get the referer page to redirect back
+    $referer = $_SERVER['HTTP_REFERER'] ?? $basePath . '/';
+    return $response->withHeader('Location', $referer)->withStatus(302);
+});
+
+// ── 8. SEED ROUTE ─────────────────────────────────────────────────────────────
 $app->get('/seed', function (Request $request, Response $response) use ($basePath): Response {
     R::wipe('adoptionhistory');
     R::wipe('adoptionrequest');
@@ -201,6 +221,53 @@ $app->post('/contact', function (Request $request, Response $response) use ($twi
     return $twig->render($response, 'contact.twig', [
         'success' => 'Your message has been sent successfully. We will contact you soon!'
     ]);
+});
+
+// ── DONATE PAGE ───────────────────────────────────────────────────────────────
+$app->get('/donate', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'donate.twig');
+});
+
+$app->post('/donate', function (Request $request, Response $response) use ($twig): Response {
+    $data = $request->getParsedBody();
+
+    $amount = trim($data['amount'] ?? '');
+    $customAmount = trim($data['custom_amount'] ?? '');
+    $fullName = trim($data['full_name'] ?? '');
+    $email = trim($data['email'] ?? '');
+
+    $finalAmount = $customAmount !== '' ? $customAmount : $amount;
+
+    $errors = [];
+
+    if ($finalAmount === '' || !is_numeric($finalAmount) || $finalAmount < 5) {
+        $errors[] = 'Donation amount must be at least $5.';
+    }
+
+    if ($fullName === '') {
+        $errors[] = 'Full name is required.';
+    }
+
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'A valid email is required.';
+    }
+
+    if (!empty($errors)) {
+        return $twig->render($response, 'donate.twig', [
+            'errors' => $errors,
+            'old' => $data
+        ]);
+    }
+
+    return $twig->render($response, 'donate.twig', [
+        'success' => 'Thank you for your donation of $' . htmlspecialchars($finalAmount) . '!',
+        'old' => []
+    ]);
+});
+
+// ── FAQ PAGE ──────────────────────────────────────────────────────────────────
+$app->get('/faq', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'faq.twig');
 });
 
 // ── 9. PET ROUTES ─────────────────────────────────────────────────────────────
