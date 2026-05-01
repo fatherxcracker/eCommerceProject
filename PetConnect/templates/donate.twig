@@ -1,0 +1,180 @@
+{% extends "base.twig" %}
+
+{% block title %}Donate - PetConnect{% endblock %}
+
+{% block content %}
+
+<section class="donate-breadcrumb">
+    <a href="{{ base_path }}/">Home</a>
+    <span>›</span>
+    <strong>Donate</strong>
+</section>
+
+<section class="donate-hero">
+    <div class="donate-heart">♡</div>
+    <h1>Support Our Mission</h1>
+    <p>
+        Your donation helps us rescue, care for, and find loving homes for animals
+        in need. Every contribution makes a difference.
+    </p>
+</section>
+
+<section class="donate-page">
+
+    <div class="donate-card">
+        <h2>Make a Donation</h2>
+
+        {% if success is defined %}
+            <div class="donate-success">
+                {{ success }}
+            </div>
+        {% endif %}
+
+        {% if errors is defined %}
+            <div class="donate-error">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{{ base_path }}/donate">
+
+            <div class="donate-tabs">
+                <label>
+                    <input type="radio" name="donation_type" value="one-time" checked>
+                    <span>One-Time</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="donation_type" value="monthly">
+                    <span>Monthly</span>
+                </label>
+            </div>
+
+            <h3>Select an amount</h3>
+
+            <div class="amount-grid">
+                <label>
+                    <input type="radio" name="amount" value="25">
+                    <span>$25</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="amount" value="50" checked>
+                    <span>$50</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="amount" value="100">
+                    <span>$100</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="amount" value="250">
+                    <span>$250</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="amount" value="500">
+                    <span>$500</span>
+                </label>
+            </div>
+
+            <div class="custom-amount">
+                <span>$</span>
+                <input type="number" name="custom_amount" min="5" placeholder="Custom amount (min. $5)">
+            </div>
+
+            <small>Minimum donation: $5</small>
+
+            <div class="donate-form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" placeholder="John Doe" value="{{ old.full_name ?? '' }}">
+            </div>
+
+            <div class="donate-form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="your@email.com" value="{{ old.email ?? '' }}">
+            </div>
+
+            <div class="donate-form-group">
+                <label>Card Information</label>
+                <input type="text" name="card_number" placeholder="4242 4242 4242 4242">
+            </div>
+
+            <div class="donate-row">
+                <input type="text" name="expiry" placeholder="MM/YY">
+                <input type="text" name="cvc" placeholder="CVC">
+            </div>
+
+            <button type="submit" class="donate-button">
+                Donate
+            </button>
+
+            <p class="donate-note">
+                Your donation is tax-deductible. You'll receive a receipt via email.
+            </p>
+
+        </form>
+    </div>
+
+    <div class="donate-side">
+
+        <div class="impact-card">
+            <h2>Your Impact</h2>
+
+            <div class="impact-item">
+                <span>✓</span>
+                <div>
+                    <strong>$25</strong>
+                    <p>Provides food for a pet for one week</p>
+                </div>
+            </div>
+
+            <div class="impact-item">
+                <span>✓</span>
+                <div>
+                    <strong>$50</strong>
+                    <p>Covers vaccinations for one pet</p>
+                </div>
+            </div>
+
+            <div class="impact-item">
+                <span>✓</span>
+                <div>
+                    <strong>$100</strong>
+                    <p>Provides medical care for an injured animal</p>
+                </div>
+            </div>
+
+            <div class="impact-item">
+                <span>✓</span>
+                <div>
+                    <strong>$250</strong>
+                    <p>Funds a complete adoption process</p>
+                </div>
+            </div>
+
+            <div class="impact-item">
+                <span>✓</span>
+                <div>
+                    <strong>$500</strong>
+                    <p>Supports emergency rescue operations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="help-card">
+            <h2>Other Ways to Help</h2>
+            <p>• Volunteer at our shelter</p>
+            <p>• Foster a pet in need</p>
+            <p>• Donate supplies</p>
+            <p>• Share our mission</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.twig" %}
+
+{% block title %}FAQ - PetConnect{% endblock %}
+
+{% block content %}
+
+<section class="faq-breadcrumb">
+    <a href="{{ base_path }}/">Home</a>
+    <span>›</span>
+    <strong>FAQ</strong>
+</section>
+
+<section class="faq-hero">
+    <div class="faq-icon">?</div>
+    <h1>Frequently Asked Questions</h1>
+    <p>
+        Find answers to common questions about our adoption process, fees, and pet care.
+    </p>
+</section>
+
+<section class="faq-page">
+
+    <div class="faq-card">
+        <h2>Adoption Process</h2>
+
+        <details>
+            <summary>How do I adopt a pet?</summary>
+            <p>Browse available pets, choose the pet you are interested in, and submit an adoption request. Our team will contact you with the next steps.</p>
+        </details>
+
+        <details>
+            <summary>What are the adoption requirements?</summary>
+            <p>You must provide basic personal information, a safe living environment, and agree to care for the pet responsibly.</p>
+        </details>
+
+        <details>
+            <summary>How long does the adoption process take?</summary>
+            <p>The typical adoption process takes 1-2 weeks from application submission to bringing your new pet home. This includes application review, home visit, meet-and-greet, and final paperwork.</p>
+        </details>
+
+        <details>
+            <summary>Can I meet the pet before adopting?</summary>
+            <p>Yes. We encourage adopters to meet the pet before completing the adoption.</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>Adoption Fees</h2>
+
+        <details>
+            <summary>What are the adoption fees?</summary>
+            <p>Adoption fees depend on the pet, age, and medical needs. Fees help cover care, food, and medical costs.</p>
+        </details>
+
+        <details>
+            <summary>What's included in the adoption fee?</summary>
+            <p>The adoption fee covers vaccinations, spaying/neutering, microchipping, initial medical checkup, and deworming. You'll also receive the pet's medical records and a starter kit.</p>
+        </details>
+
+        <details>
+            <summary>Are there payment plans available?</summary>
+            <p>Please contact us directly to discuss available payment options.</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>Pet Care</h2>
+
+        <details>
+            <summary>What supplies do I need before bringing my pet home?</summary>
+            <p>You should prepare food, bowls, a bed, toys, grooming supplies, and a safe space for the pet.</p>
+        </details>
+
+        <details>
+            <summary>Do all pets come with medical records?</summary>
+            <p>Yes. Every adopted pet comes with available medical records and vaccination information.</p>
+        </details>
+
+        <details>
+            <summary>What if I have questions after adoption?</summary>
+            <p>You can contact us anytime. We offer support after adoption to help you and your pet adjust.</p>
+        </details>
+    </div>
+
+    <div class="faq-card">
+        <h2>Returns & Support</h2>
+
+        <details>
+            <summary>What is your return policy?</summary>
+            <p>If the adoption is not working out, contact us immediately. We will help find the safest solution for the pet.</p>
+        </details>
+
+        <details>
+            <summary>Do you offer post-adoption support?</summary>
+            <p>Yes. We provide guidance and support after adoption for pet care, adjustment, and basic questions.</p>
+        </details>
+
+        <details>
+            <summary>Can I foster a pet before adopting?</summary>
+            <p>Yes. Fostering may be available depending on the pet and shelter needs.</p>
+        </details>
+    </div>
+
+</section>
+
+<section class="faq-contact-box">
+    <h2>Still have questions?</h2>
+    <p>Can't find the answer you're looking for? Contact us and we'll be happy to help!</p>
+    <a href="{{ base_path }}/contact">Contact Us →</a>
+</section>
+
+{% endblock %}

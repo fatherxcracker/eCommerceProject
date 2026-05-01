@@ -186,6 +186,53 @@ $app->post('/contact', function (Request $request, Response $response) use ($twi
     ]);
 });
 
+// ── DONATE PAGE ───────────────────────────────────────────────────────────────
+$app->get('/donate', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'donate.twig');
+});
+
+$app->post('/donate', function (Request $request, Response $response) use ($twig): Response {
+    $data = $request->getParsedBody();
+
+    $amount = trim($data['amount'] ?? '');
+    $customAmount = trim($data['custom_amount'] ?? '');
+    $fullName = trim($data['full_name'] ?? '');
+    $email = trim($data['email'] ?? '');
+
+    $finalAmount = $customAmount !== '' ? $customAmount : $amount;
+
+    $errors = [];
+
+    if ($finalAmount === '' || !is_numeric($finalAmount) || $finalAmount < 5) {
+        $errors[] = 'Donation amount must be at least $5.';
+    }
+
+    if ($fullName === '') {
+        $errors[] = 'Full name is required.';
+    }
+
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'A valid email is required.';
+    }
+
+    if (!empty($errors)) {
+        return $twig->render($response, 'donate.twig', [
+            'errors' => $errors,
+            'old' => $data
+        ]);
+    }
+
+    return $twig->render($response, 'donate.twig', [
+        'success' => 'Thank you for your donation of $' . htmlspecialchars($finalAmount) . '!',
+        'old' => []
+    ]);
+});
+
+// ── FAQ PAGE ──────────────────────────────────────────────────────────────────
+$app->get('/faq', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'faq.twig');
+});
+
 // ── 9. PET ROUTES ─────────────────────────────────────────────────────────────
 // Specific routes before parameterised {id}
 $app->get('/pets',                           [PetController::class, 'index']);

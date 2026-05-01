@@ -42,6 +42,8 @@
         <li><a href="{{ base_path }}/pets" data-nav="/pets">Browse Pets</a></li>
         <li><a href="{{ base_path }}/about" data-nav="/about">About</a></li>
         <li><a href="{{ base_path }}/contact" data-nav="/contact">Contact Us</a></li>
+        <li><a href="{{ base_path }}/donate" data-nav="/donate">♡ Donate</a></li>
+        <li><a href="{{ base_path }}/faq" data-nav="/faq">FAQ</a></li>
         {% if session.user_id is defined and session.user_id %}
             <li><a href="{{ base_path }}/adoptions" data-nav="/adoptions">My Adoptions</a></li>
             {% if session.user_role == 'admin' %}
