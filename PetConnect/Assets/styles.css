@@ -308,3 +308,290 @@ body{
     padding: 1rem;
     min-height: 220px;
 }
+
+/* CONTACT PAGE */
+
+.contact-header {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.contact-header h1 {
+    font-size: 2.2rem;
+    color: var(--color-dark);
+    margin-bottom: .5rem;
+}
+
+.contact-header p {
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: var(--color-muted);
+    line-height: 1.6;
+}
+
+.contact-page {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    padding: 2rem 3rem;
+}
+
+.contact-card,
+.contact-info-card {
+    background: white;
+    border: 1px solid #f2c8b8;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+}
+
+.contact-card h2 {
+    color: black;
+    margin-bottom: 1.5rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: .9rem;
+    font-size: 1rem;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: 2px solid var(--color-primary);
+    border-color: transparent;
+}
+
+.contact-note {
+    text-align: center;
+    color: var(--color-muted);
+    margin-top: .8rem;
+}
+
+.contact-info-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.contact-info-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.contact-icon {
+    color: var(--color-primary);
+    font-size: 1.6rem;
+    width: 35px;
+}
+
+.contact-info-item h3 {
+    color: black;
+    margin-bottom: .5rem;
+}
+
+.contact-info-item p {
+    color: var(--color-dark);
+    margin-bottom: .3rem;
+}
+
+.contact-success {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.contact-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 850px) {
+    .contact-page {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .contact-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ABOUT PAGE */
+
+.about-breadcrumb {
+    padding: 1.5rem 3rem;
+    color: black;
+}
+
+.about-breadcrumb a {
+    color: black;
+    text-decoration: none;
+}
+
+.about-breadcrumb span {
+    color: #f97316;
+    margin: 0 .7rem;
+}
+
+.about-hero {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.about-hero h1 {
+    color: black;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.about-hero p {
+    max-width: 820px;
+    margin: 0 auto;
+    color: #333;
+    font-size: 1.3rem;
+    line-height: 1.6;
+}
+
+.about-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 2rem 4rem;
+}
+
+.about-two-columns h2,
+.about-values h2,
+.about-impact h2,
+.about-team h2 {
+    color: black;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.about-two-columns h2 {
+    text-align: left;
+}
+
+.about-two-columns p {
+    color: #222;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+}
+
+.about-values {
+    padding: 3rem;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.value-card {
+    background: white;
+    border: 1px solid #f97316;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.value-icon {
+    color: #f97316;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.value-card h3 {
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.value-card p {
+    color: #333;
+    line-height: 1.5;
+}
+
+.about-impact {
+    background: #f97316;
+    color: white;
+    margin: 3rem;
+    padding: 3rem 2rem;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.about-impact h2 {
+    color: white;
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.impact-grid strong {
+    font-size: 3rem;
+    color: white;
+}
+
+.impact-grid p {
+    color: white;
+    font-size: 1.1rem;
+}
+
+.about-team {
+    text-align: center;
+    padding: 3rem 2rem 5rem;
+}
+
+.about-team p {
+    max-width: 850px;
+    margin: 1rem auto;
+    color: #222;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .about-two-columns,
+    .values-grid,
+    .impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-two-columns,
+    .about-values {
+        padding: 2rem;
+    }
+
+    .about-impact {
+        margin: 2rem;
+    }
+}

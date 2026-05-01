@@ -131,6 +131,50 @@ $app->get('/', function (Request $request, Response $response) use ($basePath): 
     return $response->withHeader('Location', $basePath . '/pets')->withStatus(302);
 });
 
+// ── CONTACT PAGE ──────────────────────────────────────────────────────────────
+$app->get('/contact', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'contact.twig');
+});
+
+$app->post('/contact', function (Request $request, Response $response) use ($twig): Response {
+    $data = $request->getParsedBody();
+
+    $name = trim($data['name'] ?? '');
+    $email = trim($data['email'] ?? '');
+    $phone = trim($data['phone'] ?? '');
+    $subject = trim($data['subject'] ?? '');
+    $message = trim($data['message'] ?? '');
+
+    $errors = [];
+
+    if ($name === '') {
+        $errors[] = 'Name is required.';
+    }
+
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'A valid email is required.';
+    }
+
+    if ($subject === '') {
+        $errors[] = 'Subject is required.';
+    }
+
+    if ($message === '') {
+        $errors[] = 'Message is required.';
+    }
+
+    if (!empty($errors)) {
+        return $twig->render($response, 'contact.twig', [
+            'errors' => $errors,
+            'old' => $data
+        ]);
+    }
+
+    return $twig->render($response, 'contact.twig', [
+        'success' => 'Your message has been sent successfully. We will contact you soon!'
+    ]);
+});
+
 // ── 9. PET ROUTES ─────────────────────────────────────────────────────────────
 // Specific routes before parameterised {id}
 $app->get('/pets',                           [PetController::class, 'index']);
@@ -161,6 +205,11 @@ $app->get('/adoptions/{id:[0-9]+}',  [AdoptionController::class, 'status']);
 // ── 12. ADMIN ROUTES (protected) ─────────────────────────────────────────────
 $authMiddleware  = new AuthMiddleware($app->getResponseFactory(), $basePath);
 $adminMiddleware = new AdminMiddleware($app->getResponseFactory(), $basePath);
+
+// ── ABOUT PAGE ────────────────────────────────────────────────────────────────
+$app->get('/about', function (Request $request, Response $response) use ($twig): Response {
+    return $twig->render($response, 'about.twig');
+});
 
 $app->group('/admin', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->get('',                                 [AdminController::class, 'dashboard']);

@@ -19,6 +19,8 @@
 
     <ul class="navbar__links">
         <li><a href="{{ base_path }}/pets">Browse Pets</a></li>
+        <li><a href="{{ base_path }}/about">About</a></li>
+        <li><a href="{{ base_path }}/contact">Contact Us</a></li>
         {% if session.user_id is defined and session.user_id %}
             <li><a href="{{ base_path }}/adoptions">My Adoptions</a></li>
             <li><a href="{{ base_path }}/profile">{{ session.user_name }}</a></li>
