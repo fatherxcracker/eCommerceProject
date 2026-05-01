@@ -4,7 +4,7 @@
 {% block content %}
 <div class="auth-page">
     <div class="auth-card">
-        <h1>Join PetConnect 🐾</h1>
+        <h1>{{ translations['auth.join_petconnect']|default('Join PetConnect 🐾') }}</h1>
         <p class="auth-card__sub">{{ translations['auth.register']|default('Create an account to start adopting.') }}</p>
 
         <form action="{{ base_path }}/register" method="POST" class="auth-form">
