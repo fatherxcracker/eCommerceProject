@@ -1,0 +1,78 @@
+{% extends 'base.twig' %}
+
+{% block title %}PetConnect — Find Your Forever Friend{% endblock %}
+
+{% block content %}
+<section class="hero-home">
+    <div class="hero-home__text">
+        <span class="eyebrow">Adopt · Don't Shop</span>
+        <h1>Find Your<br><span class="hero-home__accent">Forever Friend.</span></h1>
+        <p class="hero-home__lead">Thousands of loving pets are waiting for a home. Browse adoptable dogs, cats, birds, and more — and start your journey today.</p>
+        <div class="hero-home__actions">
+            <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">Browse Pets</a>
+            <a href="{{ base_path }}/about" class="btn btn--secondary btn--lg">Learn More</a>
+        </div>
+    </div>
+    <div class="hero-home__visual">
+        <div class="hero-home__circle"></div>
+        <img src="{{ base_path }}/Assets/images/PetConnect-Hero-Dog.jpg" alt="A happy dog" class="hero-home__image">
+    </div>
+</section>
+
+<section class="stats-row">
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.available }}</span><span class="stat-pill__label">Available Pets</span></div>
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.adopted }}</span><span class="stat-pill__label">Happy Adoptions</span></div>
+    <div class="stat-pill"><span class="stat-pill__num">{{ stats.categories }}</span><span class="stat-pill__label">Species</span></div>
+</section>
+
+{% if featured %}
+<section class="home-section">
+    <div class="home-section__header">
+        <h2>Meet Some Friends</h2>
+        <a href="{{ base_path }}/pets" class="home-section__link">View all pets →</a>
+    </div>
+    <div class="pet-grid">
+        {% for pet in featured %}
+            <article class="pet-card">
+                <a href="{{ base_path }}/pets/{{ pet.id }}">
+                    <img src="{{ pet.image ? base_path ~ pet.image : base_path ~ '/Assets/img/default-pet.jpg' }}" alt="{{ pet.name }}" class="pet-card__img">
+                    <div class="pet-card__body">
+                        <span class="badge badge--{{ pet.status }}">{{ pet.status|capitalize }}</span>
+                        <h3 class="pet-card__name">{{ pet.name }}</h3>
+                        <p class="pet-card__meta">{{ pet.breed }} · {{ pet.age }} yr{% if pet.age != 1 %}s{% endif %}</p>
+                        <p class="pet-card__location">📍 {{ pet.location }}</p>
+                    </div>
+                </a>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="home-section">
+    <h2 class="text-center">How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step__icon">🔎</div>
+            <h3>1. Browse</h3>
+            <p>Explore profiles of pets in your area and filter by breed, age, or size.</p>
+        </div>
+        <div class="step">
+            <div class="step__icon">💌</div>
+            <h3>2. Apply</h3>
+            <p>Found a match? Send an adoption request directly through the site.</p>
+        </div>
+        <div class="step">
+            <div class="step__icon">🏠</div>
+            <h3>3. Welcome Home</h3>
+            <p>Get approved, meet your new friend, and welcome them home.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-banner">
+    <h2>Ready to change a life?</h2>
+    <p>A pet is waiting for you to choose them.</p>
+    <a href="{{ base_path }}/pets" class="btn btn--primary btn--lg">Start Browsing</a>
+</section>
+{% endblock %}

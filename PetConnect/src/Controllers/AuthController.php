@@ -86,37 +86,6 @@ class AuthController extends BaseController
         return $this->redirect($response, '/login');
     }
 
-    public function profile(Request $request, Response $response): Response
-    {
-        if (!$this->isLoggedIn()) {
-            return $this->redirect($response, '/login');
-        }
-
-        $user = User::find($this->currentUserId());
-        return $this->render($response, 'auth/profile.twig', ['user' => $user]);
-    }
-
-    public function updateProfile(Request $request, Response $response): Response
-    {
-        $data = (array) $request->getParsedBody();
-        $user = User::find($this->currentUserId());
-
-        if (!$user) {
-            return $this->redirect($response, '/login');
-        }
-
-        $user->name = htmlspecialchars($data['name'] ?? $user->name);
-
-        if (!empty($data['password'])) {
-            $user->password_hash = password_hash($data['password'], PASSWORD_BCRYPT);
-        }
-
-        $user->save();
-        $_SESSION['user_name'] = $user->name;
-        $this->flash('success', 'Profile updated.');
-        return $this->redirect($response, '/profile');
-    }
-
     public function showResetPassword(Request $request, Response $response): Response
     {
         return $this->render($response, 'auth/reset_password.twig');
@@ -131,8 +100,9 @@ class AuthController extends BaseController
     private function setUserSession(User $user): void
     {
         session_regenerate_id(true);
-        $_SESSION['user_id']   = $user->id;
-        $_SESSION['user_name'] = $user->name;
-        $_SESSION['user_role'] = $user->role;
+        $_SESSION['user_id']     = $user->id;
+        $_SESSION['user_name']   = $user->name;
+        $_SESSION['user_role']   = $user->role;
+        $_SESSION['user_avatar'] = $user->avatar ?? '';
     }
 }

@@ -9,6 +9,7 @@ use App\Controllers\AdminController;
 use App\Controllers\AdoptionController;
 use App\Controllers\AuthController;
 use App\Controllers\PetController;
+use App\Controllers\UserController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\FlashMiddleware;
@@ -43,6 +44,7 @@ AppFactory::setContainer($container);
 
 $container->set(PetController::class,      fn() => new PetController($twig, $basePath));
 $container->set(AuthController::class,     fn() => new AuthController($twig, $basePath));
+$container->set(UserController::class,     fn() => new UserController($twig, $basePath));
 $container->set(AdoptionController::class, fn() => new AdoptionController($twig, $basePath));
 $container->set(AdminController::class,    fn() => new AdminController($twig, $basePath));
 
@@ -127,8 +129,17 @@ $app->get('/seed', function (Request $request, Response $response) use ($basePat
 });
 
 // ── 8. HOME ───────────────────────────────────────────────────────────────────
-$app->get('/', function (Request $request, Response $response) use ($basePath): Response {
-    return $response->withHeader('Location', $basePath . '/pets')->withStatus(302);
+$app->get('/', function (Request $request, Response $response) use ($twig): Response {
+    $featured = R::find('pet', 'status = ? ORDER BY id DESC LIMIT 3', ['available']);
+    $stats = [
+        'available'  => R::count('pet', 'status = ?', ['available']),
+        'adopted'    => R::count('pet', 'status = ?', ['adopted']),
+        'categories' => R::count('category'),
+    ];
+    return $twig->render($response, 'home.twig', [
+        'featured' => $featured,
+        'stats'    => $stats,
+    ]);
 });
 
 // ── CONTACT PAGE ──────────────────────────────────────────────────────────────
@@ -191,8 +202,9 @@ $app->post('/login',         [AuthController::class, 'login']);
 $app->get('/2fa',            [AuthController::class, 'show2FA']);
 $app->post('/2fa',           [AuthController::class, 'verify2FA']);
 $app->post('/logout',        [AuthController::class, 'logout']);
-$app->get('/profile',        [AuthController::class, 'profile']);
-$app->post('/profile',       [AuthController::class, 'updateProfile']);
+$app->get('/profile',        [UserController::class, 'profile']);
+$app->post('/profile',       [UserController::class, 'updateProfile']);
+$app->post('/profile/delete',[UserController::class, 'deleteAccount']);
 $app->get('/reset-password', [AuthController::class, 'showResetPassword']);
 $app->post('/reset-password',[AuthController::class, 'resetPassword']);
 

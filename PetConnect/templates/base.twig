@@ -5,36 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PetConnect{% endblock %}</title>
     <link rel="stylesheet" href="{{ base_path }}/Assets/styles.css">
+    <script>
+        // Apply saved theme before render to avoid flash of light/dark
+        (function() {
+            const prefs = JSON.parse(localStorage.getItem('petconnect_prefs') || '{}');
+            const theme = prefs.theme || 'system';
+            const resolved = theme === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : theme;
+            document.documentElement.setAttribute('data-theme', resolved);
+        })();
+        function applyTheme(theme) {
+            const resolved = theme === 'system'
+                ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                : theme;
+            document.documentElement.setAttribute('data-theme', resolved);
+        }
+    </script>
     {% block head %}{% endblock %}
 </head>
 <body>
 
 <nav class="navbar">
-    <a class="navbar__logo" href="{{ base_path }}/pets">PetConnect</a>
+    <a class="navbar__logo" href="{{ base_path }}/">
+        <span class="navbar__logo-icon">🐾</span>
+        PetConnect
+    </a>
 
     <div class="navbar__search">
-        <input type="text" id="live-search" placeholder="Search pets...">
+        <input type="text" id="live-search" placeholder="Search for pets by name, breed, or location...">
         <div id="search-results" class="search-dropdown hidden"></div>
     </div>
 
     <ul class="navbar__links">
-        <li><a href="{{ base_path }}/pets">Browse Pets</a></li>
-        <li><a href="{{ base_path }}/about">About</a></li>
-        <li><a href="{{ base_path }}/contact">Contact Us</a></li>
+        <li><a href="{{ base_path }}/" data-nav="/">Home</a></li>
+        <li><a href="{{ base_path }}/pets" data-nav="/pets">Browse Pets</a></li>
+        <li><a href="{{ base_path }}/about" data-nav="/about">About</a></li>
+        <li><a href="{{ base_path }}/contact" data-nav="/contact">Contact Us</a></li>
         {% if session.user_id is defined and session.user_id %}
-            <li><a href="{{ base_path }}/adoptions">My Adoptions</a></li>
-            <li><a href="{{ base_path }}/profile">{{ session.user_name }}</a></li>
+            <li><a href="{{ base_path }}/adoptions" data-nav="/adoptions">My Adoptions</a></li>
             {% if session.user_role == 'admin' %}
-                <li><a href="{{ base_path }}/admin" class="btn btn--admin btn--sm">Admin</a></li>
+                <li><a href="{{ base_path }}/admin" class="btn btn--admin btn--sm" data-nav="/admin">Admin</a></li>
             {% endif %}
-            <li>
-                <form method="POST" action="{{ base_path }}/logout" style="display:inline">
-                    <button type="submit" class="btn btn--sm">Logout</button>
+            <li class="navbar__user">
+                <a href="{{ base_path }}/profile" class="navbar__profile" data-nav="/profile" title="View profile">
+                    {% if session.user_avatar %}
+                        <img src="{{ base_path }}{{ session.user_avatar }}" alt="" class="navbar__avatar navbar__avatar--img">
+                    {% else %}
+                        <span class="navbar__avatar">{{ session.user_name|first|upper }}</span>
+                    {% endif %}
+                    <span class="navbar__username">{{ session.user_name }}</span>
+                </a>
+                <form method="POST" action="{{ base_path }}/logout" class="navbar__logout-form">
+                    <button type="submit" class="btn btn--secondary btn--sm" title="Sign out">Logout</button>
                 </form>
             </li>
         {% else %}
-            <li><a href="{{ base_path }}/login">Login</a></li>
-            <li><a href="{{ base_path }}/register">Register</a></li>
+            <li><a href="{{ base_path }}/login" class="btn btn--secondary btn--sm" data-nav="/login">Login</a></li>
+            <li><a href="{{ base_path }}/register" class="btn btn--primary btn--sm" data-nav="/register">Register</a></li>
         {% endif %}
     </ul>
 </nav>
@@ -53,8 +81,20 @@
     {% block content %}{% endblock %}
 </main>
 
+{% include 'partials/footer.twig' %}
+
 <script>
     const BASE_PATH = '{{ base_path }}';
+
+    (function highlightActiveNavLink() {
+        const path = window.location.pathname.replace(BASE_PATH, '') || '/';
+        document.querySelectorAll('[data-nav]').forEach(link => {
+            const target = link.dataset.nav;
+            if (path === target || (target !== '/' && path.startsWith(target))) {
+                link.classList.add('is-active');
+            }
+        });
+    })();
 </script>
 <script src="{{ base_path }}/Assets/app.js"></script>
 {% block scripts %}{% endblock %}
