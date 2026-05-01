@@ -1,5 +1,17 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => '/',
+    'secure'   => isset($_SERVER['HTTPS']),
+    'httponly' => true,
+    'samesite' => 'Strict',
+]);
 session_start();
 
 //set maintenance mode to false if we finish maintenance
@@ -8,6 +20,7 @@ define('MAINTENANCE_MODE', false);
 use App\Controllers\AdminController;
 use App\Controllers\AdoptionController;
 use App\Controllers\AuthController;
+use App\Controllers\ChatController;
 use App\Controllers\PetController;
 use App\Middleware\AdminMiddleware;
 use App\Middleware\AuthMiddleware;
@@ -22,13 +35,16 @@ use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 
-require __DIR__ . '/vendor/autoload.php';
-
 // ── 1. DATABASE ───────────────────────────────────────────────────────────────
-if (!is_dir(__DIR__ . '/var')) {
-    mkdir(__DIR__ . '/var', 0755, true);
+$dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4',
+    $_ENV['DB_HOST'],
+    $_ENV['DB_NAME']
+);
+R::setup($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS']);
+
+if ($_ENV['APP_ENV'] === 'production') {
+    R::freeze(true);
 }
-R::setup('sqlite:' . __DIR__ . '/var/petconnect.db');
 
 // ── 2. BASE PATH ──────────────────────────────────────────────────────────────
 $basePath = rtrim(str_ireplace('index.php', '', $_SERVER['SCRIPT_NAME']), '/');
@@ -45,6 +61,7 @@ $container->set(PetController::class,      fn() => new PetController($twig, $bas
 $container->set(AuthController::class,     fn() => new AuthController($twig, $basePath));
 $container->set(AdoptionController::class, fn() => new AdoptionController($twig, $basePath));
 $container->set(AdminController::class,    fn() => new AdminController($twig, $basePath));
+$container->set(ChatController::class,     fn() => new ChatController($twig, $basePath));
 
 // ── 5. APPLICATION ────────────────────────────────────────────────────────────
 $app = AppFactory::create();
@@ -177,5 +194,8 @@ $app->group('/admin', function (\Slim\Routing\RouteCollectorProxy $group) {
     $group->post('/adoptions/{id:[0-9]+}/reject',  [AdoptionController::class, 'reject']);
 })->add($adminMiddleware)->add($authMiddleware);
 
-// ── 13. RUN ───────────────────────────────────────────────────────────────────
+// ── 13. CHAT ROUTE ────────────────────────────────────────────────────────────
+$app->post('/api/chat', [ChatController::class, 'message'])->add($authMiddleware);
+
+// ── 14. RUN ───────────────────────────────────────────────────────────────────
 $app->run();

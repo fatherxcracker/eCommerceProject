@@ -178,7 +178,7 @@ class MySQL extends AQueryWriter implements QueryWriter
 		if (!isset($options['noInitcode']))
 		$this->adapter->setInitCode(function($version) use(&$me) {
 			try {
-				if (strpos($version, 'maria')===FALSE && intval($version)>=8) {
+				if (strpos(strtolower($version), 'maria')===FALSE && intval($version)>=8) {
 						$me->useFeature('ignoreDisplayWidth');
 				}
 			} catch( \Exception $e ){}
@@ -422,6 +422,7 @@ class MySQL extends AQueryWriter implements QueryWriter
 	 */
 	public function sqlStateIn( $state, $list, $extraDriverDetails = array() )
 	{
+		if (is_null($state)) $state = 'NULL';
 		$stateMap = array(
 			'42S02' => QueryWriter::C_SQLSTATE_NO_SUCH_TABLE,
 			'42S22' => QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,

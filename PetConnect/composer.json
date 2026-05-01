@@ -9,7 +9,9 @@
         "gabordemooij/redbean": "^5.7",
         "delight-im/auth": "^7.0",
         "symfony/translation": "^7.0",
-        "robthree/twofactorauth": "^2.0"
+        "robthree/twofactorauth": "^2.0",
+        "vlucas/phpdotenv": "^5.0",
+        "php-di/php-di": "^7.0"
     },
     "autoload": {
         "psr-4": {

@@ -5,6 +5,7 @@ namespace RedBeanPHP;
 use RedBeanPHP\ToolBox as ToolBox;
 use RedBeanPHP\AssociationManager as AssociationManager;
 use RedBeanPHP\OODBBean as OODBBean;
+use RedBeanPHP\SimpleModelInterface as SimpleModelInterface;
 
 /**
  * RedBeanPHP Tag Manager.
@@ -120,7 +121,7 @@ class TagManager
 	 * or 'horror' this operation will return FALSE because the third parameter
 	 * has been set to TRUE.
 	 *
-	 * @param  OODBBean     $bean bean to check for tags
+	 * @param  OODBBean|SimpleModelInterface     $bean bean to check for tags
 	 * @param  array|string $tags list of tags
 	 * @param  boolean      $all  whether they must all match or just some
 	 *
@@ -128,6 +129,10 @@ class TagManager
 	 */
 	public function hasTag( $bean, $tags, $all = FALSE )
 	{
+		if ($bean instanceof SimpleModelInterface) {
+			$bean = $bean->unbox();
+		}
+
 		$foundtags = $this->tag( $bean );
 
 		$tags = $this->extractTagsIfNeeded( $tags );
@@ -156,13 +161,17 @@ class TagManager
 	 * In the example above, the $blog bean will no longer
 	 * be associated with the tags 'smart' and 'interesting'.
 	 *
-	 * @param  OODBBean     $bean    tagged bean
+	 * @param  OODBBean|SimpleModelInterface     $bean    tagged bean
 	 * @param  array|string $tagList list of tags (names)
 	 *
 	 * @return void
 	 */
 	public function untag( $bean, $tagList )
 	{
+		if ($bean instanceof SimpleModelInterface) {
+			$bean = $bean->unbox();
+		}
+
 		$tags = $this->extractTagsIfNeeded( $tagList );
 
 		foreach ( $tags as $tag ) {
@@ -192,13 +201,17 @@ class TagManager
 	 * as 'TexMex' and 'Mexican Cuisine'. The second line will
 	 * retrieve all tags attached to the meal object.
 	 *
-	 * @param OODBBean $bean    bean to tag
+	 * @param OODBBean|SimpleModelInterface $bean    bean to tag
 	 * @param mixed    $tagList tags to attach to the specified bean
 	 *
 	 * @return string
 	 */
-	public function tag( OODBBean $bean, $tagList = NULL )
+	public function tag( $bean, $tagList = NULL )
 	{
+		if ($bean instanceof SimpleModelInterface) {
+			$bean = $bean->unbox();
+		}
+
 		if ( is_null( $tagList ) ) {
 
 			$tags = $bean->sharedTag;
@@ -233,13 +246,18 @@ class TagManager
 	 * The example adds the tag 'halloween' to the $blog
 	 * bean.
 	 *
-	 * @param OODBBean           $bean    bean to tag
+	 * @param OODBBean|SimpleModelInterface        $bean    bean to tag
 	 * @param array|string|false $tagList list of tags to add to bean
 	 *
 	 * @return void
 	 */
-	public function addTags( OODBBean $bean, $tagList )
+	public function addTags( $bean, $tagList )
 	{
+
+		if ($bean instanceof SimpleModelInterface) {
+			$bean = $bean->unbox();
+		}
+
 		$tags = $this->extractTagsIfNeeded( $tagList );
 
 		if ( $tagList === FALSE ) {

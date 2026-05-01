@@ -57,5 +57,9 @@
 <script src="{{ base_path }}/Assets/app.js"></script>
 {% block scripts %}{% endblock %}
 
+{% if session.user_id is defined and session.user_id %}
+    {% include 'partials/chat_widget.twig' %}
+{% endif %}
+
 </body>
 </html>

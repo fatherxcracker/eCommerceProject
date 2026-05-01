@@ -24,6 +24,7 @@ use RedBeanPHP\Util\Look as Look;
 use RedBeanPHP\Util\Diff as Diff;
 use RedBeanPHP\Util\Tree as Tree;
 use RedBeanPHP\Util\Feature;
+use RedBeanPHP\SimpleModelInterface as SimpleModelInterface;
 
 /**
  * RedBean Facade
@@ -1691,12 +1692,12 @@ class Facade
 	 * as 'TexMex' and 'Mexican Cuisine'. The second line will
 	 * retrieve all tags attached to the meal object.
 	 *
-	 * @param OODBBean      $bean    bean to tag
+	 * @param OODBBean|SimpleModelInterface $bean    bean to tag
 	 * @param string[]|NULL $tagList tags to attach to the specified bean
 	 *
 	 * @return string[]
 	 */
-	public static function tag( OODBBean $bean, $tagList = NULL )
+	public static function tag( $bean, $tagList = NULL )
 	{
 		return self::$tagManager->tag( $bean, $tagList );
 	}
@@ -1716,12 +1717,12 @@ class Facade
 	 * The example adds the tag 'halloween' to the $blog
 	 * bean.
 	 *
-	 * @param OODBBean        $bean    bean to tag
+	 * @param OODBBean|SimpleModelInterface        $bean    bean to tag
 	 * @param string|string[] $tagList list of tags to add to bean
 	 *
 	 * @return void
 	 */
-	public static function addTags( OODBBean $bean, $tagList )
+	public static function addTags( $bean, $tagList )
 	{
 		self::$tagManager->addTags( $bean, $tagList );
 	}

@@ -25,6 +25,22 @@ use RedBeanPHP\RedException as RedException;
  */
 class Tags extends Base
 {
+	public function testTagUnbox()
+	{
+		R::nuke();
+		$band = R::dispense('band');
+		$band = $band->box();
+		R::store($band);
+		R::tag($band, 'jazz');
+		$true = R::hasTag($band, 'jazz');
+		$false = R::hasTag($band, 'rock');
+		asrt($true, true);
+		asrt($false, false);
+		R::untag($band, 'jazz');
+		$false = R::hasTag($band, 'jazz');
+		asrt($false, false);
+	}
+
 	public function testTagsCache()
 	{
 		R::nuke();

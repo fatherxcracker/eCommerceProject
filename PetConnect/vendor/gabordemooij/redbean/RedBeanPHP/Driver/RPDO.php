@@ -224,7 +224,7 @@ class RPDO implements Driver
 		if ($driver === 'mysql') {
 			$charset = $this->hasCap( 'utf8mb4' ) ? 'utf8mb4' : 'utf8';
 			$collate = $this->hasCap( 'utf8mb4_520' ) ? '_unicode_520_ci' : '_unicode_ci';
-			$this->pdo->setAttribute(\PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES '. $charset ); //on every re-connect
+			$this->pdo->setAttribute(RB_PDO_MYSQL_ATTR_INIT_COMMAND, 'SET NAMES '. $charset ); //on every re-connect
 			/* #624 removed space before SET NAMES because it causes trouble with ProxySQL */
 			$this->pdo->exec('SET NAMES '. $charset); //also for current connection
 			$this->mysqlCharset = $charset;
@@ -394,7 +394,7 @@ class RPDO implements Driver
 	 */
 	public function setUseStringOnlyBinding( $yesNo )
 	{
-		$this->flagUseStringOnlyBinding = (boolean) $yesNo;
+		$this->flagUseStringOnlyBinding = (bool) $yesNo;
 		if ( $this->loggingEnabled && $this->logger && method_exists($this->logger,'setUseStringOnlyBinding')) {
 			$this->logger->setUseStringOnlyBinding( $this->flagUseStringOnlyBinding );
 		}
@@ -885,7 +885,7 @@ class RPDO implements Driver
 	 */
 	public function setEnableLogging( $enable )
 	{
-		$this->loggingEnabled = (boolean) $enable;
+		$this->loggingEnabled = (bool) $enable;
 		return $this;
 	}
 

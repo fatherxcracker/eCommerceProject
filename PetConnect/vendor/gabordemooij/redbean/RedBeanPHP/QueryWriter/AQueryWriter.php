@@ -250,7 +250,15 @@ abstract class AQueryWriter
 	 */
 	public static function canBeTreatedAsInt( $value )
 	{
-		return (bool) ( strval( ($value === FALSE && self::$treatFalseAsInt) ? 0 : $value ) === strval( intval( $value ) ) );
+		// boolean handling
+		if ($value === FALSE && self::$treatFalseAsInt) return true; // FALSE -> 0 / ''
+		if ($value === TRUE) return true; // TRUE -> 1
+		if ($value === INF) return false;
+		// Fix for PHP 8.x: avoid intval() on strings that look like scientific notation
+		// (e.g., MD5 hashes starting with "3e08...", UUIDs, etc.)
+		// PHP 8 throws "float-string not representable as int" for these values
+		// See: https://github.com/gabordemooij/redbean/issues/967
+		return (filter_var($value, FILTER_VALIDATE_INT)!==false);
 	}
 
 	/**
@@ -344,7 +352,7 @@ abstract class AQueryWriter
 	 */
 	public static function setNarrowFieldMode( $narrowField )
 	{
-		self::$flagNarrowFieldMode = (boolean) $narrowField;
+		self::$flagNarrowFieldMode = (bool) $narrowField;
 	}
 
 	/**
@@ -384,7 +392,7 @@ abstract class AQueryWriter
 	 */
 	public static function setSQLFilters( $sqlFilters, $safeMode = FALSE )
 	{
-		self::$flagSQLFilterSafeMode = (boolean) $safeMode;
+		self::$flagSQLFilterSafeMode = (bool) $safeMode;
 		self::$sqlFilters = $sqlFilters;
 	}
 
