@@ -289,8 +289,12 @@ $app->post('/logout',        [AuthController::class, 'logout']);
 $app->get('/profile',        [UserController::class, 'profile']);
 $app->post('/profile',       [UserController::class, 'updateProfile']);
 $app->post('/profile/delete',[UserController::class, 'deleteAccount']);
-$app->get('/reset-password', [AuthController::class, 'showResetPassword']);
-$app->post('/reset-password',[AuthController::class, 'resetPassword']);
+$app->get('/reset-password',         [AuthController::class, 'showResetPassword']);
+$app->post('/reset-password',        [AuthController::class, 'resetPassword']);
+$app->get('/reset-password/verify',  [AuthController::class, 'showVerifyReset']);
+$app->post('/reset-password/verify', [AuthController::class, 'verifyResetCode']);
+$app->get('/reset-password/new',     [AuthController::class, 'showNewPassword']);
+$app->post('/reset-password/new',    [AuthController::class, 'updatePassword']);
 
 // ── 11. ADOPTION ROUTES ───────────────────────────────────────────────────────
 $app->get('/pets/{id:[0-9]+}/adopt',  [AdoptionController::class, 'showApplyForm']);
