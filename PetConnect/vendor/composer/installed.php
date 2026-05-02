@@ -3,7 +3,7 @@
         'name' => 'petconnect/app',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '53d4d4a2c23ac7b5bcbfa0e0946e414e4776e7ee',
+        'reference' => '81b01726ca9c65f68d99526a4dcc2cbfa0fc88d4',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -103,7 +103,7 @@
         'petconnect/app' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '53d4d4a2c23ac7b5bcbfa0e0946e414e4776e7ee',
+            'reference' => '81b01726ca9c65f68d99526a4dcc2cbfa0fc88d4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
