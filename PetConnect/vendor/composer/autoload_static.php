@@ -52,6 +52,7 @@ class ComposerStaticInit0ba65ba9a311d6b3cda06a7ba581da64
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'L' =>
         array (
@@ -157,6 +158,10 @@ class ComposerStaticInit0ba65ba9a311d6b3cda06a7ba581da64
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
+        'PHPMailer\\PHPMailer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Laravel\\SerializableClosure\\' =>
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
@@ -216,7 +221,10 @@ class ComposerStaticInit0ba65ba9a311d6b3cda06a7ba581da64
         'App\\Controllers\\AdoptionController' => __DIR__ . '/../..' . '/Src/Controllers/AdoptionController.php',
         'App\\Controllers\\AuthController' => __DIR__ . '/../..' . '/Src/Controllers/AuthController.php',
         'App\\Controllers\\BaseController' => __DIR__ . '/../..' . '/Src/Controllers/BaseController.php',
+        'App\\Controllers\\ChatController' => __DIR__ . '/../..' . '/Src/Controllers/ChatController.php',
         'App\\Controllers\\PetController' => __DIR__ . '/../..' . '/Src/Controllers/PetController.php',
+        'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/Src/Controllers/UserController.php',
+        'App\\I18n\\I18n' => __DIR__ . '/../..' . '/Src/I18n/I18n.php',
         'App\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/Src/Middleware/AdminMiddleware.php',
         'App\\Middleware\\AuthMiddleware' => __DIR__ . '/../..' . '/Src/Middleware/AuthMiddleware.php',
         'App\\Middleware\\FlashMiddleware' => __DIR__ . '/../..' . '/Src/Middleware/FlashMiddleware.php',
@@ -426,6 +434,13 @@ class ComposerStaticInit0ba65ba9a311d6b3cda06a7ba581da64
         'Laravel\\SerializableClosure\\Support\\ReflectionClosure' => __DIR__ . '/..' . '/laravel/serializable-closure/src/Support/ReflectionClosure.php',
         'Laravel\\SerializableClosure\\Support\\SelfReference' => __DIR__ . '/..' . '/laravel/serializable-closure/src/Support/SelfReference.php',
         'Laravel\\SerializableClosure\\UnsignedSerializableClosure' => __DIR__ . '/..' . '/laravel/serializable-closure/src/UnsignedSerializableClosure.php',
+        'PHPMailer\\PHPMailer\\DSNConfigurator' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/DSNConfigurator.php',
+        'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
+        'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
+        'PHPMailer\\PHPMailer\\OAuthTokenProvider' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuthTokenProvider.php',
+        'PHPMailer\\PHPMailer\\PHPMailer' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/PHPMailer.php',
+        'PHPMailer\\PHPMailer\\POP3' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/POP3.php',
+        'PHPMailer\\PHPMailer\\SMTP' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/SMTP.php',
         'PhpOption\\LazyOption' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/LazyOption.php',
         'PhpOption\\None' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/None.php',
         'PhpOption\\Option' => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption/Option.php',

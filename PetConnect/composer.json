@@ -11,7 +11,8 @@
         "symfony/translation": "^7.0",
         "robthree/twofactorauth": "^2.0",
         "vlucas/phpdotenv": "^5.0",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "^7.0",
+        "phpmailer/phpmailer": "^6.9"
     },
     "autoload": {
         "psr-4": {
